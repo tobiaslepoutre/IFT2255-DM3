@@ -9,12 +9,18 @@ public class Tache {
 
     /* Assosiations */
     private ArrayList<Action> actions;
-    //TODO association to Activity
+    private Activity activity;
     //TODO association to robot (Implment Machines Module)
 
     public Tache(Date executionDate){
         this.executionDate = executionDate;
         this.actions = new ArrayList<>();
+    }
+
+    public Tache(Date executionDate, Activity activity){
+        this.executionDate = executionDate;
+        this.actions = new ArrayList<>();
+        this.activity = activity;
     }
 
     public Date getExecutionDate(){

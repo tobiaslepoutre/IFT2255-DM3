@@ -2,6 +2,8 @@ import Users.Fournisseur;
 import Users.Utilisateur;
 import System.SystemeRobotix;
 
+import java.util.Date;
+
 public class Prototype {
 
     private static SystemeRobotix system;
@@ -31,13 +33,8 @@ public class Prototype {
 
         /* ------ */
         //system.showAllUsers();
-        user1.followUser(user2.getPseudo());
-        user3.followUser(user2.getPseudo());
-
-        user1.followSeller(seller1.getFirstName());
-        user2.followSeller(seller1.getFirstName());
-        seller1.followUser(user1.getPseudo());
-
-        system.showSeller(seller1.getFirstName());
+        user1.createActivity("CREATION","voiture","course",new Date() , new Date(), 50);
+        system.showAllUsers();
+        user1.removeActivity("course");
     }
 }

@@ -1,9 +1,11 @@
 package Users;
 
+import Activity.Activity;
 import Activity.Interet;
 import System.SystemeRobotix;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Utilisateur extends Acteur {
     
@@ -11,11 +13,12 @@ public class Utilisateur extends Acteur {
     private String secondName;
     private String pseudo;
     private int    points;
+    private ArrayList<String> notifications;
 
     /* Assosiations */
     private ArrayList<Interet> interets;
-    //TODO : activity - crée
-    //TODO : activity - participe
+    private ArrayList<Activity> createdActivities;
+    private ArrayList<Activity> activities;
     //TODO : flotte
     //TODO : composante
     
@@ -27,6 +30,10 @@ public class Utilisateur extends Acteur {
         this.setSecondName(secondName);
 
         this.interets = new ArrayList<>();
+        this.notifications = new ArrayList<>();
+
+        this.createdActivities = new ArrayList<>();
+        this.activities = new ArrayList<>();
     }
 
     /* Methods*/
@@ -45,6 +52,10 @@ public class Utilisateur extends Acteur {
             return false;
         }
         return super.followUser(pseudo);
+    }
+
+    public void addPoints(int points){
+        this.setPoints(this.points + points);
     }
 
     public int getPoints() {
@@ -80,22 +91,13 @@ public class Utilisateur extends Acteur {
         return "Utilisateur | Pseudo : " + this.getPseudo() + ", Name : " + this.getFirstName();
     }
 
-    public boolean ajouterInteret(String name){
+    public boolean ajouterInteret(String type, String name){
         if(this.interets.size() == 10){
             return false;
         }
 
-        for(Interet i : SystemeRobotix.getInstance().getInterets()){
-            if(i.getName().equals(name) && !this.interets.contains(i)){
-                this.interets.add(i);
-                i.addInterestedUser(this.getPseudo());
-                return true;
-            }
-        }
-
-        Interet i = SystemeRobotix.getInstance().createNewInterest(name);
-        i.addInterestedUser(this.getPseudo());
-        this.interets.add(i);
+        SystemeRobotix.getInstance().createInteret(type, name);
+        this.interets.add(SystemeRobotix.getInstance().getInteret(type,name));
         return true;
     }
 
@@ -109,6 +111,49 @@ public class Utilisateur extends Acteur {
         }
 
         return false;
+    }
+
+    public ArrayList<Activity> getCreatedActivities(){
+        return this.createdActivities;
+    }
+
+    public void addNotification(String notif){
+        this.notifications.add(notif);
+    }
+
+    public void createActivity(String type, String interetName, String name, Date startDate, Date endDate, int reward){
+        // crée une nouvelle activité
+
+        SystemeRobotix.getInstance().createInteret(type,interetName);
+        Interet interet = SystemeRobotix.getInstance().getInteret(type, interetName);
+        SystemeRobotix.getInstance().createActivity(reward, startDate, endDate, name , this , interet);
+        Activity activity = SystemeRobotix.getInstance().getActivity(name);
+
+        this.createdActivities.add(activity);
+        this.interets.add(interet);
+
+    }
+
+    public void removeActivity(String activityName){
+        Activity toRemove = null;
+
+        for(Activity act :this.createdActivities){
+            if(act.getName().equals(activityName)){
+                toRemove = act;
+                break;
+            }
+        }
+
+        if(toRemove != null){
+            SystemeRobotix.getInstance().removeActivity(toRemove);
+            this.createdActivities.remove(toRemove);
+        }
+
+    }
+
+    public void createTask(){
+        //crée une task et l'ajoute ou non à une activité
+
     }
 
 }

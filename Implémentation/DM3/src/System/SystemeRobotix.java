@@ -1,7 +1,9 @@
 package System;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import Activity.Activity;
 import Activity.Interet;
 import Users.Acteur;
 import Users.Fournisseur;
@@ -17,6 +19,7 @@ public class SystemeRobotix {
     private SystemeRobotix(){
         this.acteurs = new ArrayList<>();
         this.interets = new ArrayList<>();
+        this.activities = new ArrayList<>();
     }
 
     public static SystemeRobotix getInstance(){
@@ -32,8 +35,9 @@ public class SystemeRobotix {
     }
 
     /* assosiations */
-    ArrayList<Acteur> acteurs;
-    ArrayList<Interet> interets;
+    private ArrayList<Acteur> acteurs;
+    private ArrayList<Interet> interets;
+    private ArrayList<Activity> activities;
 
 
     public ArrayList<Utilisateur> getUsers(){
@@ -207,10 +211,56 @@ public class SystemeRobotix {
         return this.interets;
     }
 
-    public Interet createNewInterest(String name){
-        Interet i = new Interet("OTHER" , name);
-        this.interets.add(i);
-        return i;
+    public boolean createInteret(String type, String name){
+        //crée un nouvel interet si il n'existe pas déja
+        for(Interet interet : this.interets){
+            if(interet.getName().equals(name) && interet.getType().equals(type)){
+                return false;
+            }
+        }
+        this.interets.add(new Interet(type, name));
+        return true;
+    }
+
+    public Interet getInteret(String type, String name){
+        //retourne un interet voulu si il existe sinon null
+        for(Interet interet : this.interets){
+            if(interet.getName().equals(name) && interet.getType().equals(type)){
+                return interet;
+            }
+        }
+        return null;
+    }
+
+    public void createActivity(int reward, Date startDate, Date endDate, String name, Utilisateur creator, Interet i){
+        //TODO : check if the activity is unique
+        i.addInterestedUser(creator.getPseudo());
+        this.activities.add(new Activity(reward,startDate,endDate,name, creator,i));
+    }
+
+    public Activity getActivity(String name){
+        for(Activity activity : this.activities){
+            if(activity.getName().equals(name)){
+                return activity;
+            }
+        }
+        return null;
+    }
+
+    public void removeActivity(Activity activity){
+
+        for(Interet interet : this.interets){
+            if(interet.getActivities().contains(activity)){
+                interet.removeRelatedActivity(activity);
+            }
+        }
+
+        this.activities.remove(activity);
+
+    }
+
+    public ArrayList<Activity> getActivities(){
+        return this.activities;
     }
 
 
