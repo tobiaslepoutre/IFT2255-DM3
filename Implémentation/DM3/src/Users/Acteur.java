@@ -199,4 +199,24 @@ public abstract class Acteur{
         return this.password.equals(password);
     }
 
+    public void showFollowing(){
+        for(Utilisateur user : this.followingUser){
+            System.out.println(user);
+        }
+
+        for(Fournisseur seller : this.followingSeller){
+            System.out.println(seller);
+        }
+    }
+
+    public void showFollowers(){
+        for(Utilisateur user : this.followersUser){
+            System.out.println(user);
+        }
+
+        for(Fournisseur seller : this.followersSeller){
+            System.out.println(seller);
+        }
+    }
+
 }

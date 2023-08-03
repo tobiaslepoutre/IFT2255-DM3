@@ -70,4 +70,8 @@ public class Utilisateur extends Acteur {
         this.secondName = secondName;
     }
 
+    public String toString() {
+        return "Utilisateur | Pseudo : " + this.getPseudo() + ", Name : " + this.getFirstName();
+    }
+
 }

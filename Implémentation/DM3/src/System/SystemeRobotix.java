@@ -99,4 +99,107 @@ public class SystemeRobotix {
             System.out.println("The new user has not been created");
         }
     }
+
+    public void showAllUsers(){
+        for(Utilisateur user : this.getUsers()){
+            System.out.println(user);
+        }
+
+        for(Fournisseur seller : this.getSellers()){
+            System.out.println(seller);
+        }
+    }
+
+    public void searchUser(String pseudo , String ByfollowersOf){
+        for(Utilisateur user : this.getUsers()){
+            if(user.getPseudo().equals(pseudo)){
+                System.out.println(user);
+            }
+
+            // we don't use the showFollowers methodes because
+            //we don't want to show doublons : case where the given pseudo is also a follower.
+            if(user.getPseudo().equals(ByfollowersOf)){
+                for(Utilisateur user_ : this.getUsers()){
+                    if(user.isFollowedByUser(user_.getPseudo()) && user_.getPseudo() != pseudo){
+                        System.out.println(user_);
+                    }
+                }
+            }
+
+
+            if(user.isFollowedBySeller(ByfollowersOf)){
+                System.out.println(user);
+            }
+        }
+    }
+
+    public void searchSeller(String name, String location, String composante){
+        for(Fournisseur seller : this.getSellers()){
+            if(seller.getFirstName().equals(name)){
+                System.out.println(seller);
+            }
+            if(seller.getLocation().equals(location)){
+                System.out.println(seller);
+            }
+
+            //TODO : recherche par nom de composantes (Implémenter le package Machines)
+        }
+    }
+
+    public void showProfile(String pseudo){
+        for(Utilisateur user : this.getUsers()){
+            if(user.getPseudo().equals(pseudo)){
+                System.out.println("----- Profile of " + user.getPseudo() + " -----");
+                System.out.println(user);
+                System.out.println("Points : " + user.getPoints());
+
+                System.out.println("• Followers : ");
+                user.showFollowers();
+
+                System.out.println("• Following : ");
+                user.showFollowing();
+
+                //TODO : afficher les activités et les interêts (implementer le package Activity)
+            }
+
+        }
+    }
+
+    public void showSeller(String name){
+        for(Fournisseur seller : this.getSellers()){
+            if(seller.getFirstName().equals(name)){
+                System.out.println("----- Profile of " + seller.getFirstName() + " -----");
+                System.out.println(seller);
+
+                System.out.println("• Followers : ");
+                seller.showFollowers();
+
+                System.out.println("• Following : ");
+                seller.showFollowing();
+
+                //TODO : afficher les composantes vendu (Implementer le package machines)
+            }
+
+        }
+    }
+
+    public void showSellers(){
+        for(Fournisseur seller : this.getSellers()){
+            System.out.println("----- Profile of " + seller.getFirstName() + " -----");
+            System.out.println(seller);
+
+            System.out.println("• Followers : ");
+            seller.showFollowers();
+
+            System.out.println("• Following : ");
+            seller.showFollowing();
+
+            //TODO : afficher les composantes vendu (Implementer le package machines)
+
+        }
+    }
+
+
+
+
 }

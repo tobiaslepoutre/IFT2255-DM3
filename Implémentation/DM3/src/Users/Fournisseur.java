@@ -60,4 +60,8 @@ public class Fournisseur extends Acteur {
     private void setCapacity(int capacity) {
         this.capacity = capacity;
     }
+
+    public String toString(){
+        return "Fournisseur | Companie's name : " + this.getCompagnieName() + ", Name : " + this.getFirstName();
+    }
 }
