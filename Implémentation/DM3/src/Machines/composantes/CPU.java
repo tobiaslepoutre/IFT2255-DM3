@@ -4,7 +4,7 @@ public class CPU extends Composante {
     private int consomation;
 
     public CPU(String name, String type, String description, float price, int consomation) {
-        super(name, type, description, price); 
+        super(name, "CPU", description, price); 
         this.consomation = consomation;
     }
 
