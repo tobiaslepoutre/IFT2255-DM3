@@ -1,6 +1,8 @@
 package System;
 
 import java.util.ArrayList;
+
+import Activity.Interet;
 import Users.Acteur;
 import Users.Fournisseur;
 import Users.Utilisateur;
@@ -14,6 +16,7 @@ public class SystemeRobotix {
 
     private SystemeRobotix(){
         this.acteurs = new ArrayList<>();
+        this.interets = new ArrayList<>();
     }
 
     public static SystemeRobotix getInstance(){
@@ -30,6 +33,7 @@ public class SystemeRobotix {
 
     /* assosiations */
     ArrayList<Acteur> acteurs;
+    ArrayList<Interet> interets;
 
 
     public ArrayList<Utilisateur> getUsers(){
@@ -199,7 +203,15 @@ public class SystemeRobotix {
         }
     }
 
+    public ArrayList<Interet> getInterets(){
+        return this.interets;
+    }
 
+    public Interet createNewInterest(String name){
+        Interet i = new Interet("OTHER" , name);
+        this.interets.add(i);
+        return i;
+    }
 
 
 }

@@ -1,6 +1,9 @@
 package Users;
 
+import Activity.Interet;
 import System.SystemeRobotix;
+
+import java.util.ArrayList;
 
 public class Utilisateur extends Acteur {
     
@@ -10,11 +13,11 @@ public class Utilisateur extends Acteur {
     private int    points;
 
     /* Assosiations */
-    //interet
-    //activity - crée
-    //activity - participe
-    //flotte
-    //composante
+    private ArrayList<Interet> interets;
+    //TODO : activity - crée
+    //TODO : activity - participe
+    //TODO : flotte
+    //TODO : composante
     
     /* constructeur */
     public Utilisateur(String compagnieName,String firstName,String secondName, String password, String pseudo,String email ,String phoneNumber) throws Exception{
@@ -22,8 +25,11 @@ public class Utilisateur extends Acteur {
         this.setPoints(0);
         this.setPseudo(pseudo);
         this.setSecondName(secondName);
+
+        this.interets = new ArrayList<>();
     }
 
+    /* Methods*/
     public boolean changePseudo(String pseudo){
         try {
             this.setPseudo(pseudo);
@@ -72,6 +78,37 @@ public class Utilisateur extends Acteur {
 
     public String toString() {
         return "Utilisateur | Pseudo : " + this.getPseudo() + ", Name : " + this.getFirstName();
+    }
+
+    public boolean ajouterInteret(String name){
+        if(this.interets.size() == 10){
+            return false;
+        }
+
+        for(Interet i : SystemeRobotix.getInstance().getInterets()){
+            if(i.getName().equals(name) && !this.interets.contains(i)){
+                this.interets.add(i);
+                i.addInterestedUser(this.getPseudo());
+                return true;
+            }
+        }
+
+        Interet i = SystemeRobotix.getInstance().createNewInterest(name);
+        i.addInterestedUser(this.getPseudo());
+        this.interets.add(i);
+        return true;
+    }
+
+    public boolean suppripmerInteret(String name){
+        for(Interet i : SystemeRobotix.getInstance().getInterets()){
+            if(i.getName().equals(name) && this.interets.contains(i)){
+                this.interets.remove(i);
+                i.removeInterestedUser(this.getPseudo());
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
