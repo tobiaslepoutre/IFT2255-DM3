@@ -9,8 +9,8 @@ public class Activity{
 
     /* attributes*/
     private int reward;
-    private int startDate;
-    private int endDate;
+    private Date startDate;
+    private Date endDate;
     private String name;
 
     /* assosiations */
@@ -21,7 +21,7 @@ public class Activity{
     private ArrayList<Tache> taches;
 
     /* Constructors */
-    public Activity(int reward, int startDate , int endDate , String name, Utilisateur createur, Interet interet)  {
+    public Activity(int reward, Date startDate , Date endDate , String name, Utilisateur createur, Interet interet)  {
 
         this.reward = reward;
         this.startDate = startDate;
@@ -70,11 +70,11 @@ public class Activity{
         return this.name;
     }
 
-    public int getStartDate(){
+    public Date getStartDate(){
         return this.startDate;
     }
 
-    public int getEndDate(){
+    public Date getEndDate(){
         return this.endDate;
     }
 
