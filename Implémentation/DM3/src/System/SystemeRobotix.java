@@ -232,7 +232,7 @@ public class SystemeRobotix {
         return null;
     }
 
-    public void createActivity(int reward, int startDate, int endDate, String name, Utilisateur creator, Interet i){
+    public void createActivity(int reward, Date startDate, Date endDate, String name, Utilisateur creator, Interet i){
         //TODO : check if the activity is unique
         i.addInterestedUser(creator.getPseudo());
         this.activities.add(new Activity(reward,startDate,endDate,name, creator,i));
