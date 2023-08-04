@@ -27,7 +27,7 @@ public class Robot {
     private ArrayList<Activity> activities;
     private ArrayList<Composante> composants;
 
-    
+
     public Robot(String name, String type, String serialNumber, Utilisateur owner) {
 
         this.name = name;
@@ -55,19 +55,18 @@ public class Robot {
     }
 
 
-    public boolean isBusy(Date date) {
+    public boolean isBusy(Date startDate, Date endDate) {
 
         // on parcours toutes les activité et on check que la date n'empiete pas sur
         //la plage des dates d'activité
-
         for(Activity a : this.activities){
-            if(date.after(a.getStartDate()) && date.before(a.getEndDate())){
+            if(endDate.after(a.getStartDate()) || startDate.before(a.getEndDate())){
                 return true;
             }
         }
         return false;
     }
-    
+
     public void afficherEtat() {
         System.out.println("Name: " + this.name);
         System.out.println("Type: " + this.type);
