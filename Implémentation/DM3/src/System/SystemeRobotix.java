@@ -5,6 +5,7 @@ import java.util.Date;
 
 import Activity.Activity;
 import Activity.Interet;
+import Machines.composantes.Composante;
 import Users.Acteur;
 import Users.Fournisseur;
 import Users.Utilisateur;
@@ -94,8 +95,8 @@ public class SystemeRobotix {
         try{
             this.acteurs.add(new Utilisateur(companieName, firstName, secondName, password, pseudo, email, phoneNumber));
         }catch(Exception e){
-            e.printStackTrace();
-            System.out.println("The new user has not been created");
+            System.out.println(e.getMessage());
+            System.out.println("Un nouveau profil utilisateur n'a pas été crée");
         }
     }
 
@@ -104,17 +105,17 @@ public class SystemeRobotix {
             this.acteurs.add(new Fournisseur(companieName, firstName, password, email, phoneNumber, location, capacity));
         }catch(Exception e){
             System.out.println(e.getMessage());
-            System.out.println("The new user has not been created");
+            System.out.println("Un nouveau profil fournisseur n'a pas été crée");
         }
     }
 
     public void showAllUsers(){
         for(Utilisateur user : this.getUsers()){
-            System.out.println(user);
+            System.out.println("•" + user.getPseudo());
         }
 
         for(Fournisseur seller : this.getSellers()){
-            System.out.println(seller);
+            System.out.println("•" + seller.getFirstName());
         }
     }
 
@@ -141,16 +142,25 @@ public class SystemeRobotix {
         }
     }
 
-    public void searchSeller(String name, String location, String composante){
+    public void searchSeller(String name, String location, String composanteType){
         for(Fournisseur seller : this.getSellers()){
             if(seller.getFirstName().equals(name)){
-                System.out.println(seller);
+                System.out.println("•" + seller.getFirstName());
+                continue;
             }
             if(seller.getLocation().equals(location)){
-                System.out.println(seller);
+                System.out.println("•" + seller.getFirstName());
+                continue;
             }
 
-            //TODO : recherche par nom de composantes (Implémenter le package Machines)
+            for(Composante c : seller.getComposantes()){
+                if(c.getType().equals(composanteType)){
+                    System.out.println("•" + seller.getFirstName());
+                    break;
+                }
+
+            }
+
         }
     }
 
@@ -168,9 +178,13 @@ public class SystemeRobotix {
                 user.showFollowing();
 
                 //TODO : afficher les activités et les interêts (implementer le package Activity)
+
+                return;
             }
 
         }
+
+        System.out.println("Aucun profil ne correspond à ce pseudo");
     }
 
     public void showSeller(String name){

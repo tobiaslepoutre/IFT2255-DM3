@@ -170,13 +170,13 @@ public abstract class Acteur{
         if(email.contains("@")){
             for(Acteur acteur : SystemeRobotix.getInstance().getActors()){
                 if(acteur.getEmail().equals(email)){
-                    throw new Exception("This email already exist in the database, try to log in instead");
+                    throw new Exception("cet email existe déja dans notre systeme, essayer de vous connecter.");
                 }
             }
             this.email = email;
         }
         else{
-            throw new Exception("The new email has an invalid format");
+            throw new Exception("l'email n'est pas dans un format correct");
         }
     }
 
@@ -203,21 +203,21 @@ public abstract class Acteur{
 
     public void showFollowing(){
         for(Utilisateur user : this.followingUser){
-            System.out.println(user);
+            System.out.println("             -"+ user);
         }
 
         for(Fournisseur seller : this.followingSeller){
-            System.out.println(seller);
+            System.out.println("             -"+ seller);
         }
     }
 
     public void showFollowers(){
         for(Utilisateur user : this.followersUser){
-            System.out.println(user);
+            System.out.println("             -"+ user);
         }
 
         for(Fournisseur seller : this.followersSeller){
-            System.out.println(seller);
+            System.out.println("             -"+seller);
         }
     }
 

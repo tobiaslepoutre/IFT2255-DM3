@@ -80,7 +80,7 @@ public class Utilisateur extends Acteur {
     private void setPseudo(String pseudo) throws Exception {
         for(Utilisateur user : SystemeRobotix.getInstance().getUsers()){
             if(user.getPseudo().equals(pseudo)){
-                throw new Exception("This pseudo is already taken");
+                throw new Exception("ce pseudo existe déja");
             }
         }
         this.pseudo = pseudo;
