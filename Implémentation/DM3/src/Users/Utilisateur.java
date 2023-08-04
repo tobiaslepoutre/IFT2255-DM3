@@ -258,16 +258,36 @@ public class Utilisateur extends Acteur {
         return this.composantes;
     }
 
-    public void assignRobotToActivity(Activity a){
-        for(Robot r : this.flotte.getRobots()){
-            if(!r.isBusy(a.getStartDate() , a.getEndDate())){
-                a.addParticipantRobot(r);
-                a.addParticipant(this);
-                if(!this.activities.contains(a)){
-                    this.activities.add(a);
-                }
+
+    public boolean assignRobotToActivity(String activityName){
+        Activity activity = null;
+
+        for(Activity a : SystemeRobotix.getInstance().getActivities()){
+            if(a.getName().equals(activityName)){
+                activity = a;
             }
         }
+
+        if(activity == null){
+            System.out.println("this activity does not exist");
+            return false;
+        }
+
+        for(Robot r : this.flotte.getRobots()){
+            if(!r.isBusy(activity.getStartDate() , activity.getEndDate())){
+
+                activity.addParticipantRobot(r);
+                activity.addParticipant(this);
+                r.participateToActivity(activity);
+
+                if(!this.activities.contains(activity)){
+                    this.activities.add(activity);
+                }
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

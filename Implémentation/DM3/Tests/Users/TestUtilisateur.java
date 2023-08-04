@@ -153,4 +153,69 @@ public class TestUtilisateur {
 
     }
 
+    @Test
+    public void TestCreateActivite(){
+        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
+        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", 1, 3, 10));
+
+        Assert.assertTrue(system.getActivities().size() == 2);
+        Assert.assertTrue(system.getInterets().size() == 1);
+        Assert.assertTrue(system.getInterets().contains(user1.getInterets().get(0)));
+        Assert.assertTrue(system.getInterets().contains(user2.getInterets().get(0)));
+        Assert.assertTrue(user1.getInterets().get(0) == user2.getInterets().get(0));
+
+        Assert.assertFalse(user1.createActivity("EDUCATION", "physique", "voiture", 1, 3, 10));
+
+        Assert.assertTrue(user1.createActivity("CREATION", "afro", "music", 1, 3, 10));
+        Assert.assertTrue(system.getActivities().size() == 3);
+        Assert.assertTrue(system.getInterets().size() == 2);
+        Assert.assertTrue(system.getInteret("CREATION", "afro") == user1.getInterets().get(1));
+
+        Assert.assertTrue(user1.createActivity("EDUCATION", "physique", "avion", 1, 3, 10));
+        Assert.assertTrue(system.getActivities().size() == 4);
+        Assert.assertTrue(system.getInterets().size() == 3);
+    }
+
+    @Test
+    public void TestAssignRobotToActivity(){
+        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
+        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", 1, 3, 10));
+
+        seller1.createComposante("CPU", "RX900" , "the fastest CPU", 20);
+        seller2.createComposante("bras", "mechaArm" , "", 20);
+        seller1.createComposante("helice", "Ihelice" , "", 20);
+        seller2.createComposante("ecran", "Iscreen" , "", 20);
+        seller1.createComposante("bras", "mechaArm" , "", 20);
+        Assert.assertTrue(seller1.getComposantes().size() == 3);
+        Assert.assertTrue(seller2.getComposantes().size() == 2);
+
+        Assert.assertTrue(user1.buyComposante(seller1 , "CPU"));
+        Assert.assertTrue(user1.buyComposante(seller2 , "bras"));
+        Assert.assertTrue(user1.buyComposante(seller1 , "helice"));
+        Assert.assertTrue(user1.buyComposante(seller1 , "bras"));
+        Assert.assertTrue(user1.buyComposante(seller2 , "ecran"));
+
+        Assert.assertFalse(user1.buyComposante(seller2 , "bras"));
+        Assert.assertFalse(user1.buyComposante(seller1 , "ecran"));
+        Assert.assertFalse(user1.buyComposante(seller1 , "CPU"));
+        Assert.assertFalse(user1.buyComposante(seller2 , "bras"));
+        Assert.assertFalse(user1.buyComposante(seller2 , "helice"));
+
+        Assert.assertTrue(seller1.getComposantes().isEmpty());
+        Assert.assertTrue(seller2.getComposantes().isEmpty());
+
+        Assert.assertTrue(user1.createRobot("GPT","1234", "mover",user1.getComposantes()));
+        Assert.assertTrue(user1.getFlotte().getRobots().size() == 1);
+
+        Assert.assertTrue(user1.assignRobotToActivity("voiture"));
+        Assert.assertTrue(system.getActivity("voiture").getParticipants().size() == 1);
+        Assert.assertTrue(system.getActivity("voiture").getParticipants().contains(user1));
+        Assert.assertFalse(system.getActivity("voiture").getParticipants().contains(user2));
+        Assert.assertTrue(system.getInteret("CREATION", "physique").getInterestedUsers().contains(user1));
+        Assert.assertFalse(user1.assignRobotToActivity("fusée")); //the robot is busy
+
+
+    }
+
+    //TODO : do activity
 }

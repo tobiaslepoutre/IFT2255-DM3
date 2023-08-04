@@ -68,9 +68,12 @@ public class TestIntegration {
         Assert.assertTrue(system.getInterets().contains(user2.getInterets().get(0)));
 
     }
-    
+
     @Test
     public void TestIntegrationActivite2(){
+
+        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
+        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", 1, 3, 10));
 
     }
 

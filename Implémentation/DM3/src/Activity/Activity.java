@@ -30,6 +30,7 @@ public class Activity{
         this.createur = createur;
 
         this.participants = new ArrayList<>();
+        this.robots = new ArrayList<>();
         this.createur = createur;
 
         this.interets = new ArrayList<>();
