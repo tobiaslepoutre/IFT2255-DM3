@@ -44,7 +44,9 @@ public class Composante {
     }
 
     protected void setType(String type) {
-        this.type = type;
+        if (types.contains(type)){
+            this.type = type;
+        }
     }
 
     public String getDescription() {
