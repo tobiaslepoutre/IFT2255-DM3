@@ -154,9 +154,9 @@ public class TestUtilisateur {
     }
 
     @Test
-    public void TestCreateActivite(){
-        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
-        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", 1, 3, 10));
+    public void TestCreateActivity(){
+        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", new Date(), new Date(), 10));
+        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", new Date(), new Date(), 10));
 
         Assert.assertTrue(system.getActivities().size() == 2);
         Assert.assertTrue(system.getInterets().size() == 1);
@@ -164,22 +164,29 @@ public class TestUtilisateur {
         Assert.assertTrue(system.getInterets().contains(user2.getInterets().get(0)));
         Assert.assertTrue(user1.getInterets().get(0) == user2.getInterets().get(0));
 
-        Assert.assertFalse(user1.createActivity("EDUCATION", "physique", "voiture", 1, 3, 10));
+        Assert.assertFalse(user1.createActivity("EDUCATION", "physique", "voiture", new Date(), new Date(), 10));
 
-        Assert.assertTrue(user1.createActivity("CREATION", "afro", "music", 1, 3, 10));
+        Assert.assertTrue(user1.createActivity("CREATION", "afro", "music", new Date(), new Date(), 10));
         Assert.assertTrue(system.getActivities().size() == 3);
         Assert.assertTrue(system.getInterets().size() == 2);
         Assert.assertTrue(system.getInteret("CREATION", "afro") == user1.getInterets().get(1));
 
-        Assert.assertTrue(user1.createActivity("EDUCATION", "physique", "avion", 1, 3, 10));
+        Assert.assertTrue(user1.createActivity("EDUCATION", "physique", "avion", new Date(), new Date(), 10));
         Assert.assertTrue(system.getActivities().size() == 4);
         Assert.assertTrue(system.getInterets().size() == 3);
     }
 
     @Test
     public void TestAssignRobotToActivity(){
-        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
-        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", 1, 3, 10));
+
+                //Ce code sert à simuler les paramètres startDate et endDate utilisés par createActivity() et isBusy()
+        Date startDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 5);
+        Date endDate = calendar.getTime();
+        
+        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", startDate, endDate, 10));
+        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", startDate, endDate, 10));
 
         seller1.createComposante("CPU", "RX900" , "the fastest CPU", 20);
         seller2.createComposante("bras", "mechaArm" , "", 20);
