@@ -124,7 +124,7 @@ public class Utilisateur extends Acteur {
         return this.createdActivities;
     }
 
-    public boolean createActivity(String type, String interetName, String name, int startDate, int endDate, int reward){
+    public boolean createActivity(String type, String interetName, String name, Date startDate, Date endDate, int reward){
         // crée une nouvelle activité
 
         for(Activity a : SystemeRobotix.getInstance().getActivities()){
