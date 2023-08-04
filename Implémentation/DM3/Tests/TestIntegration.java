@@ -6,6 +6,8 @@ import org.junit.Before;
 import System.SystemeRobotix;
 import org.junit.Test;
 
+import java.util.Date;
+
 public class TestIntegration {
 
     private SystemeRobotix system;
