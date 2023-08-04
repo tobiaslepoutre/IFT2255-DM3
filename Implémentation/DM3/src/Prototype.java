@@ -1,7 +1,9 @@
+import Machines.composantes.Composante;
 import Users.Fournisseur;
 import Users.Utilisateur;
 import System.SystemeRobotix;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -31,43 +33,48 @@ public class Prototype {
                 connexion();
             }
 
-            System.out.println("\nQue voulez vous faire ? tapez un des choix correspondant ou out pour quittez le système : ");
+            System.out.println("----------------------------------------------------"); // TODO : gerer la date ici
+            System.out.println("\nVous avez actuellement "+ user.getMoney() + "CAD");
+            System.out.println("Que voulez vous faire ? tapez un des choix correspondant ou out pour quittez le système : \n");
 
             System.out.println("showProfile     -> voir un profil (pseudo)");
             System.out.println("showMyProfile   -> voir mon profil");
             System.out.println("showAll         -> voir tous les pseudo des profils");
             System.out.println("follow          -> suivre un autre utilisateur (pseudo)");
-            System.out.println("findSeller       -> trouver un fournisseur (nom, adresse, Type de composant voulu)");
+            System.out.println("findSeller      -> trouver un fournisseur (nom, adresse, Type de composant voulu)");
+            System.out.println("buyComponent    -> Acheter un composant chez un fournisseur");
 
             System.out.println("\n");
 
             String choice = Prototype.scanner.nextLine();
 
-            switch(choice){
-                // dans chaque cas l'idéal est d'appelé une fonction qui fait tout le travail
+            switch(choice.toUpperCase()){
 
-                case "showProfile":
+                case "SHOWPROFILE":
                     Prototype.showProfile();
                     break;
 
-                case "showMyProfile":
+                case "SHOWMYPROFILE":
                     Prototype.showMyProfile();
                     break;
 
-                case "showAll":
+                case "SHOWALL":
                     Prototype.showAll();
                     break;
 
-                case "follow":
+                case "FOLLOW":
                     Prototype.follow();
                     break;
 
-                case "findSeller":
+                case "FINDSELLER":
                     Prototype.findSeller();
                     break;
 
+                case "BUYCOMPONENT":
+                    Prototype.buyComponent();
+                    break;
 
-                case "out":
+                case "OUT":
                     Prototype.online = false;
 
                 default:break;
@@ -81,7 +88,11 @@ public class Prototype {
         System.out.print("Veuillez rentrer le pseudo du profil qui vous interesse : ");
         String pseudo = Prototype.scanner.nextLine();
 
-        system.showProfile(pseudo);
+        if(!system.showProfile(pseudo)){
+            if(!system.showSeller(pseudo)){
+                System.out.println("Aucun pseudo ni nom de fournisseur ne corresponde a votre recherche.");
+            }
+        }
     }
 
     public static void showMyProfile(){
@@ -96,11 +107,18 @@ public class Prototype {
         System.out.print("Veuillez rentrer le pseudo/nom du profil que vous voulez suivre : ");
 
         String pseudo = Prototype.scanner.nextLine();
-        if(user.followUser(pseudo)){
-            System.out.println("vous suivez désormais l'utilisateur " + pseudo);
+
+        if(!user.followUser(pseudo)){
+            if(!user.followSeller(pseudo)){
+                System.out.println("Aucun pseudo ni nom de fournisseur ne corresponde a votre recherche.");
+            }
+            else{
+                System.out.println("vous suivez désormais le fournisseur  " + pseudo);
+            }
         }
+
         else{
-            System.out.println("Vous suivez déja ce profil ou ce profil n'existe pas.");
+            System.out.println("vous suivez désormais l'utilisateur " + pseudo);
         }
     }
 
@@ -111,7 +129,56 @@ public class Prototype {
         System.out.print("Veuillez rentrer le nom du type de composante qui vous intéresse chez le fournisseur : ");
         String composanteType = Prototype.scanner.nextLine();
 
+        System.out.println("Voici la liste des différents Fournisseur demandé dans notre base de données : ");
         system.searchSeller(name, "", composanteType);
+    }
+
+    public static void buyComponent(){
+        System.out.print("donner est le nom du fournisseur chez lequel vous voulez achetez la composante : ");
+        String sellerName = Prototype.scanner.nextLine();
+
+        Fournisseur seller = null;
+        for(Fournisseur s : system.getSellers()){
+            if(s.getFirstName().toUpperCase().equals(sellerName.toUpperCase())){
+                seller = s;
+                break;
+            }
+        }
+
+        if(seller == null){
+            System.out.println("ce fournisseur n'existe pas");
+            return;
+        }
+
+        // acheter la composante au près du vendeur
+        System.out.print("donner le type de la composante que vous recherchez : ");
+        String type = Prototype.scanner.nextLine();
+
+        ArrayList<Composante> composantes = seller.getCorrespondingComponents(type);
+        if(composantes.isEmpty()){
+            System.out.println("le fournisseur " + seller.getFirstName() + " ne détient pas de composantes du type "+ type);
+            return;
+        }
+
+        System.out.println("Les différentes composante du type "+ type + " vendu par " + seller.getFirstName() + "sont : \n");
+        for(Composante c : composantes){
+            System.out.println("•" + c.getName() + " , description : "+ c.getDescription() + " , prix : " + c.getPrice());
+        }
+
+
+        System.out.print("\nVeuillez indiqué le nom de la composante que vous voulez acheter ou exit pour annuler l'achat : ");
+        String name = Prototype.scanner.nextLine();
+
+        if(name.equals("exit")){
+            return;
+        }
+
+        if(Prototype.user.buyComposante(seller, type,name)){
+            System.out.println("Bravo pour votre achat du "+ name);
+        }else{
+            System.out.println("Aucune composante ne correspond au nom : "+ name);
+        }
+
     }
 
     public static void connexion(){

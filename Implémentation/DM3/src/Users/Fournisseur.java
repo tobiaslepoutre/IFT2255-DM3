@@ -88,4 +88,16 @@ public class Fournisseur extends Acteur {
     public void deleteComposante(Composante c){
         this.composantes.remove(c);
     }
+
+    public ArrayList<Composante> getCorrespondingComponents(String type){
+        ArrayList<Composante> liste = new ArrayList<>();
+
+        for(Composante c : this.composantes){
+            if(c.getType().toUpperCase().equals(type.toUpperCase())){
+                liste.add(c);
+            }
+        }
+
+        return liste;
+    }
 }

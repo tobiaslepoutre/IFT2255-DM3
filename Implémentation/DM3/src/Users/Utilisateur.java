@@ -51,7 +51,7 @@ public class Utilisateur extends Acteur {
     }
 
     public boolean followUser(String pseudo){
-        if(pseudo.equals(this.pseudo)){
+        if(pseudo.toUpperCase().equals(this.pseudo.toUpperCase())){
             return false;
         }
         return super.followUser(pseudo);
@@ -78,6 +78,7 @@ public class Utilisateur extends Acteur {
     }
 
     private void setPseudo(String pseudo) throws Exception {
+
         for(Utilisateur user : SystemeRobotix.getInstance().getUsers()){
             if(user.getPseudo().equals(pseudo)){
                 throw new Exception("ce pseudo existe déja");
@@ -106,7 +107,7 @@ public class Utilisateur extends Acteur {
 
     public boolean suppripmerInteret(String name){
         for(Interet i : SystemeRobotix.getInstance().getInterets()){
-            if(i.getName().equals(name) && this.interets.contains(i)){
+            if(i.getName().toUpperCase().equals(name.toUpperCase()) && this.interets.contains(i)){
                 this.interets.remove(i);
                 i.removeInterestedUser(this.getPseudo());
                 return true;
@@ -128,7 +129,7 @@ public class Utilisateur extends Acteur {
         // crée une nouvelle activité
 
         for(Activity a : SystemeRobotix.getInstance().getActivities()){
-            if(a.getName().equals(name)){
+            if(a.getName().toUpperCase().equals(name.toUpperCase())){
                 System.out.println("cette activité de meme nom existe déja");
                 return false;
             }
@@ -149,7 +150,7 @@ public class Utilisateur extends Acteur {
         Activity toRemove = null;
 
         for(Activity act :this.createdActivities){
-            if(act.getName().equals(activityName)){
+            if(act.getName().toUpperCase().equals(activityName.toUpperCase())){
                 toRemove = act;
                 break;
             }
@@ -177,7 +178,7 @@ public class Utilisateur extends Acteur {
         }
 
         for(Composante c : composants){
-            if(c.getType().equals("CPU")){
+            if(c.getType().toUpperCase().equals("CPU")){
                 hasCPU = true;
             }
         }
@@ -217,7 +218,7 @@ public class Utilisateur extends Acteur {
 
         Composante composante = null;
         for(Composante c : seller.getComposantes()){
-            if(c.getType().equals(type)){
+            if(c.getType().toUpperCase().equals(type.toUpperCase())){
                 c.setOwner(this);
                 this.composantes.add(c);
                 composante = c;
@@ -239,11 +240,22 @@ public class Utilisateur extends Acteur {
 
         Composante composante = null;
         for(Composante c : seller.getComposantes()){
-            if(c.getType().equals(type) && c.getName().equals(name)){
-                c.setOwner(this);
-                this.composantes.add(c);
-                composante = c;
-                break;
+            if(c.getType().toUpperCase().equals(type.toUpperCase()) && c.getName().toUpperCase().equals(name.toUpperCase())){
+                // we check if the user has enougth money to buy the component
+
+                if(this.getMoney() >= c.getPrice()){
+                    // on met a jour les portefeuilles de l'acheteur et du vendeur.
+
+                    this.setMoney(this.getMoney() - c.getPrice());
+                    c.getSeller().setMoney(this.getMoney() + c.getPrice());
+
+                    // on récupère la composante et on la supprime du catalogue du vendeur
+                    c.setOwner(this);
+                    this.composantes.add(c);
+                    composante = c;
+                    break;
+                }
+
             }
         }
 
@@ -263,13 +275,13 @@ public class Utilisateur extends Acteur {
         Activity activity = null;
 
         for(Activity a : SystemeRobotix.getInstance().getActivities()){
-            if(a.getName().equals(activityName)){
+            if(a.getName().toUpperCase().equals(activityName.toUpperCase())){
                 activity = a;
             }
         }
 
         if(activity == null){
-            System.out.println("this activity does not exist");
+            System.out.println("Cette activité n'existe pas");
             return false;
         }
 

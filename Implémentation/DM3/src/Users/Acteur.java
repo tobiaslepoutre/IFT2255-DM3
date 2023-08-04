@@ -12,6 +12,7 @@ public abstract class Acteur{
     private String email;
     private String phoneNumber;
     private ArrayList<String> notifications;
+    private float money = 500;
 
     /* associations */ 
     ArrayList<Utilisateur> followingUser;
@@ -90,7 +91,7 @@ public abstract class Acteur{
 
     public boolean followUser(String pseudo){
         for(Utilisateur user : SystemeRobotix.getInstance().getUsers()){
-            if(user.getPseudo().equals(pseudo) && !this.followingUser.contains(user)){
+            if(user.getPseudo().toUpperCase().equals(pseudo.toUpperCase()) && !this.followingUser.contains(user)){
                 this.followingUser.add(user);
                 try{
                     user.addFollowerUser((Utilisateur)this);
@@ -113,7 +114,7 @@ public abstract class Acteur{
 
     public boolean isFollowedByUser(String pseudo){
         for(Utilisateur user : this.followersUser){
-            if(user.getPseudo().equals(pseudo)){
+            if(user.getPseudo().toUpperCase().equals(pseudo.toUpperCase())){
                 return true;
             }
         }
@@ -122,7 +123,7 @@ public abstract class Acteur{
 
     public boolean isFollowedBySeller(String name){
         for(Fournisseur user : this.followersSeller){
-            if(user.getFirstName().equals(name)){
+            if(user.getFirstName().toUpperCase().equals(name.toUpperCase())){
                 return true;
             }
         }
@@ -131,7 +132,7 @@ public abstract class Acteur{
 
     public boolean followSeller(String name){
         for(Fournisseur user : SystemeRobotix.getInstance().getSellers()){
-            if(user.getFirstName().equals(name) && !this.followingSeller.contains(user)){
+            if(user.getFirstName().toUpperCase().equals(name.toUpperCase()) && !this.followingSeller.contains(user)){
                 this.followingSeller.add(user);
                 try{
                     user.addFollowerSeller((Fournisseur)this);
@@ -162,6 +163,14 @@ public abstract class Acteur{
         return phoneNumber;
     }
 
+    public float getMoney(){
+        return this.money;
+    }
+
+    protected void setMoney(float money){
+        this.money = money;
+    }
+
     private void setCompagnieName(String compagnieName) {
         this.compagnieName = compagnieName;
     }
@@ -169,7 +178,7 @@ public abstract class Acteur{
     private void setEmail(String email) throws Exception {
         if(email.contains("@")){
             for(Acteur acteur : SystemeRobotix.getInstance().getActors()){
-                if(acteur.getEmail().equals(email)){
+                if(acteur.getEmail().toUpperCase().equals(email.toUpperCase())){
                     throw new Exception("cet email existe déja dans notre systeme, essayer de vous connecter.");
                 }
             }
@@ -193,7 +202,7 @@ public abstract class Acteur{
             this.phoneNumber = phoneNumber;
         }
         else{
-            throw new Exception("The new phone number has not a valid format, it shoud be 10 numbers.");
+            throw new Exception("Ce numéro de téléphone n'est pas dans un format valide, il doit contenir 10 chiffres..");
         }
     }
 

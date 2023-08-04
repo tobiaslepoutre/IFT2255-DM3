@@ -71,7 +71,7 @@ public class SystemeRobotix {
 
     public Utilisateur loginUser(String pseudo, String password){
         for(Utilisateur user : this.getUsers()){
-            if(user.getPseudo().equals(pseudo) && user.checkPassword(password)){
+            if(user.getPseudo().toUpperCase().equals(pseudo.toUpperCase()) && user.checkPassword(password)){
                 return user;
             }
         }
@@ -81,7 +81,7 @@ public class SystemeRobotix {
 
     public Fournisseur loginSeller(String name, String password){
         for(Fournisseur user : this.getSellers()){
-            if(user.getFirstName().equals(name) && user.checkPassword(password)){
+            if(user.getFirstName().toUpperCase().equals(name.toUpperCase()) && user.checkPassword(password)){
                 return user;
             }
         }
@@ -121,15 +121,15 @@ public class SystemeRobotix {
 
     public void searchUser(String pseudo , String ByfollowersOf){
         for(Utilisateur user : this.getUsers()){
-            if(user.getPseudo().equals(pseudo)){
+            if(user.getPseudo().toUpperCase().equals(pseudo.toUpperCase())){
                 System.out.println(user);
             }
 
             // we don't use the showFollowers methodes because
             //we don't want to show doublons : case where the given pseudo is also a follower.
-            if(user.getPseudo().equals(ByfollowersOf)){
+            if(user.getPseudo().toUpperCase().equals(ByfollowersOf.toUpperCase())){
                 for(Utilisateur user_ : this.getUsers()){
-                    if(user.isFollowedByUser(user_.getPseudo()) && user_.getPseudo() != pseudo){
+                    if(user.isFollowedByUser(user_.getPseudo()) && !user_.getPseudo().toUpperCase().equals(pseudo.toUpperCase())){
                         System.out.println(user_);
                     }
                 }
@@ -164,7 +164,7 @@ public class SystemeRobotix {
         }
     }
 
-    public void showProfile(String pseudo){
+    public boolean showProfile(String pseudo){
         for(Utilisateur user : this.getUsers()){
             if(user.getPseudo().equals(pseudo)){
                 System.out.println("----- Profile of " + user.getPseudo() + " -----");
@@ -179,15 +179,14 @@ public class SystemeRobotix {
 
                 //TODO : afficher les activités et les interêts (implementer le package Activity)
 
-                return;
+                return true;
             }
 
         }
-
-        System.out.println("Aucun profil ne correspond à ce pseudo");
+        return false;
     }
 
-    public void showSeller(String name){
+    public boolean showSeller(String name){
         for(Fournisseur seller : this.getSellers()){
             if(seller.getFirstName().equals(name)){
                 System.out.println("----- Profile of " + seller.getFirstName() + " -----");
@@ -199,10 +198,17 @@ public class SystemeRobotix {
                 System.out.println("• Following : ");
                 seller.showFollowing();
 
-                //TODO : afficher les composantes vendu (Implementer le package machines)
+                System.out.println("Composantes en vente : ");
+
+                for(Composante c : seller.getComposantes()){
+                    System.out.println("•" + c.getName() + " , description : "+ c.getDescription() + " , prix : " + c.getPrice());
+                }
+
+                return true;
             }
 
         }
+        return false;
     }
 
     public void showSellers(){
