@@ -55,29 +55,19 @@ public class Robot {
     }
 
 
-    public boolean isBusy(int date) {
-        //??? Je ne sais pas comment implémenter cette méthode, sur quels élément se base t on pour déterminer si le robot est busy?
+    public boolean isBusy(Date date) {
 
         // on parcours toutes les activité et on check que la date n'empiete pas sur
-        //la plage de date d'activité
+        //la plage des dates d'activité
 
         for(Activity a : this.activities){
-            if(date >= a.getStartDate() && date <= a.getEndDate()){
+            if(date.after(a.getStartDate()) && date.before(a.getEndDate())){
                 return true;
             }
         }
         return false;
     }
-
-    public boolean isBusy(int startDate, int endDate){
-        for(int i = startDate; i <= endDate; i++){
-            if(isBusy(i)){
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     public void afficherEtat() {
         System.out.println("Name: " + this.name);
         System.out.println("Type: " + this.type);
