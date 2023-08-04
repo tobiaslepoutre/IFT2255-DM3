@@ -11,6 +11,7 @@ public abstract class Acteur{
     private String password;
     private String email;
     private String phoneNumber;
+    private ArrayList<String> notifications;
 
     /* associations */ 
     ArrayList<Utilisateur> followingUser;
@@ -26,6 +27,7 @@ public abstract class Acteur{
         this.setPassword(password);
         this.setEmail(email);
         this.setPhoneNumber(phoneNumber);
+        this.notifications = new ArrayList<>();
 
         this.followersUser = new ArrayList<>();
         this.followingUser = new ArrayList<>();
@@ -217,6 +219,10 @@ public abstract class Acteur{
         for(Fournisseur seller : this.followersSeller){
             System.out.println(seller);
         }
+    }
+
+    public void addNotification(String notif){
+        this.notifications.add(notif);
     }
 
 }

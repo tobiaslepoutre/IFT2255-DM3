@@ -12,11 +12,15 @@ public class Flotte {
 
     
     public void ajouterRobot(Robot robot) {
-        this.robots.add(robot);
+        if(!robots.contains(robot)){
+            this.robots.add(robot);
+        }
     }
 
     public void supprimerRobot(Robot robot) {
-        this.robots.remove(robot);
+        if(this.robots.contains(robots)){
+            this.robots.remove(robot);
+        }
     }
 
     public List<Robot> getRobots() {

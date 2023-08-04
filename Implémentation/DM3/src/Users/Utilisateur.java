@@ -2,6 +2,9 @@ package Users;
 
 import Activity.Activity;
 import Activity.Interet;
+import Machines.Flotte;
+import Machines.Robot;
+import Machines.composantes.Composante;
 import System.SystemeRobotix;
 
 import java.util.ArrayList;
@@ -13,14 +16,13 @@ public class Utilisateur extends Acteur {
     private String secondName;
     private String pseudo;
     private int    points;
-    private ArrayList<String> notifications;
 
     /* Assosiations */
     private ArrayList<Interet> interets;
     private ArrayList<Activity> createdActivities;
     private ArrayList<Activity> activities;
-    //TODO : flotte
-    //TODO : composante
+    private Flotte flotte;
+    private ArrayList<Composante> composantes;
     
     /* constructeur */
     public Utilisateur(String compagnieName,String firstName,String secondName, String password, String pseudo,String email ,String phoneNumber) throws Exception{
@@ -30,10 +32,11 @@ public class Utilisateur extends Acteur {
         this.setSecondName(secondName);
 
         this.interets = new ArrayList<>();
-        this.notifications = new ArrayList<>();
 
         this.createdActivities = new ArrayList<>();
         this.activities = new ArrayList<>();
+        this.composantes = new ArrayList<>();
+        this.flotte = new Flotte();
     }
 
     /* Methods*/
@@ -117,10 +120,6 @@ public class Utilisateur extends Acteur {
         return this.createdActivities;
     }
 
-    public void addNotification(String notif){
-        this.notifications.add(notif);
-    }
-
     public void createActivity(String type, String interetName, String name, Date startDate, Date endDate, int reward){
         // crée une nouvelle activité
 
@@ -151,9 +150,63 @@ public class Utilisateur extends Acteur {
 
     }
 
+    public void createRobot(String name, String serialNumber, String type, ArrayList<Composante> composants){
+
+        boolean hasCPU = false;
+
+        for(Composante c : composants){
+            if(c.getType().equals("CPU")){
+                hasCPU = true;
+            }
+        }
+        if(!hasCPU){
+            return;
+        }
+
+        Robot r = new Robot(name, type, serialNumber, this);
+
+        for(Composante c : composants){
+            r.addComposante(c);
+        }
+
+        this.flotte.ajouterRobot(r);
+        r.joinTheFlotte(this.flotte);
+    }
+
     public void createTask(){
         //crée une task et l'ajoute ou non à une activité
 
+    }
+
+    public void buyComposante(Fournisseur seller, String type){
+        for(Composante c : seller.getComposantes()){
+            if(c.getType().equals(type)){
+                c.setOwner(this);
+                this.composantes.add(c);
+                break;
+            }
+        }
+    }
+
+    public void buyComposante(Fournisseur seller, String type, String name){
+        for(Composante c : seller.getComposantes()){
+            if(c.getType().equals(type) && c.getName().equals(name)){
+                c.setOwner(this);
+                this.composantes.add(c);
+            }
+        }
+    }
+
+    public void assignRobotToActivity(Activity a){
+        for(Robot r : this.flotte.getRobots()){
+            if(!r.isBusy(a.getStartDate() , a.getEndDate())){
+                a.addParticipantRobot(r);
+                a.addParticipant(this);
+                if(!this.activities.contains(a)){
+                    this.activities.add(a);
+                }
+            }
+        }
     }
 
 }

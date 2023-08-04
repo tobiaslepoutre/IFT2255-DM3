@@ -33,8 +33,11 @@ public class Prototype {
 
         /* ------ */
         //system.showAllUsers();
+
         user1.createActivity("CREATION","voiture","course",new Date() , new Date(), 50);
-        system.showAllUsers();
+        user1.createActivity("CREATION","voiture","navigation",new Date() , new Date(), 100);
+        user2.ajouterInteret("CREATION", "avion");
         user1.removeActivity("course");
+        user2.removeActivity("navigation");
     }
 }

@@ -1,26 +1,32 @@
 package Activity;
 
 import Activity.action.Action;
+import Machines.Robot;
+
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Tache {
-    private Date executionDate;
+    private int executionDate;
 
     /* Assosiations */
     private ArrayList<Action> actions;
     private Activity activity;
-    //TODO association to robot (Implment Machines Module)
+    private Robot executionner;
 
-    public Tache(Date executionDate){
+    public Tache(int executionDate){
         this.executionDate = executionDate;
         this.actions = new ArrayList<>();
     }
 
-    public Tache(Date executionDate, Activity activity){
+    public Tache(int executionDate, Activity activity){
         this.executionDate = executionDate;
         this.actions = new ArrayList<>();
         this.activity = activity;
+    }
+
+    public void assignRobot(Robot r){
+        this.executionner = r;
     }
 
     public Date getExecutionDate(){

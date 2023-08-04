@@ -1,5 +1,6 @@
 package Activity;
 
+import Machines.Robot;
 import Users.Utilisateur;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,19 +9,19 @@ public class Activity {
 
     /* attributes*/
     private int reward;
-    private Date startDate;
-    private Date endDate;
+    private int startDate;
+    private int endDate;
     private String name;
 
     /* assosiations */
     private ArrayList<Utilisateur> participants;
     private Utilisateur createur;
-    //TODO : Robot
+    private ArrayList<Robot> robots;
     private ArrayList<Interet> interets;
     private ArrayList<Tache> taches;
 
     /* Constructors */
-    public Activity(int reward, Date startDate , Date endDate , String name, Utilisateur createur, Interet interet)  {
+    public Activity(int reward, int startDate , int endDate , String name, Utilisateur createur, Interet interet)  {
 
         this.reward = reward;
         this.startDate = startDate;
@@ -37,6 +38,18 @@ public class Activity {
 
         this.taches = new ArrayList<>();
 
+    }
+
+    public void addParticipantRobot(Robot r){
+        if(!this.robots.contains(r)){
+            this.robots.add(r);
+        }
+    }
+
+    public void addParticipant(Utilisateur user){
+        if(!this.participants.contains(user)){
+            this.participants.add(user);
+        }
     }
 
     public void giveReward(){
@@ -56,6 +69,13 @@ public class Activity {
         return this.name;
     }
 
+    public int getStartDate(){
+        return this.startDate;
+    }
+
+    public int getEndDate(){
+        return this.endDate;
+    }
 
 
 
