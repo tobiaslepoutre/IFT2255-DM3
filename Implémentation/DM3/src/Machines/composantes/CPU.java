@@ -6,7 +6,7 @@ public class CPU extends Composante {
     private int consomation;
 
     public CPU(String name, String description, int price, Fournisseur seller) {
-        super("CPU", name, description, price, seller);
+        super(name, "CPU", description, price, seller);
 
         //no consomation when a CPU is created
         this.consomation = 0;

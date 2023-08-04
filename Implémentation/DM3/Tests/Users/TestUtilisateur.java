@@ -105,4 +105,52 @@ public class TestUtilisateur {
 
 
     }
+
+    @Test
+    public void TestBuyComposante(){
+        Assert.assertTrue(seller1.getComposantes().isEmpty());
+
+        seller1.createComposante("CPU", "RX900" , "the fastest CPU", 20);
+        Assert.assertTrue(seller1.getComposantes().size() == 1);
+
+        seller1.createComposante("CPU", "RX899" , "the second fastest CPU", 20);
+        Assert.assertTrue(seller1.getComposantes().size() == 2);
+
+        Assert.assertTrue(user1.buyComposante(seller1 , "CPU"));
+        Assert.assertTrue(seller1.getComposantes().size() == 1);
+
+        Assert.assertTrue(user1.getComposantes().size() == 1);
+        Assert.assertTrue(user1.getComposantes().get(0).getSeller() == seller1);
+        Assert.assertTrue(user1.getComposantes().get(0).getName().equals("RX900"));
+
+        Assert.assertTrue(user1.buyComposante(seller1 , "CPU"));
+        Assert.assertTrue(seller1.getComposantes().isEmpty());
+        Assert.assertTrue(user1.getComposantes().get(1).getSeller() == seller1);
+        Assert.assertTrue(user1.getComposantes().get(1).getName().equals("RX899"));
+
+    }
+
+    @Test
+    public void TestCreateRobot(){
+        seller1.createComposante("CPU", "RX900" , "the fastest CPU", 20);
+        seller1.createComposante("bras", "mechaArm" , "", 20);
+        seller1.createComposante("helice", "Ihelice" , "", 20);
+        seller1.createComposante("ecran", "Iscreen" , "", 20);
+        seller1.createComposante("bras", "mechaArm" , "", 20);
+        Assert.assertTrue(seller1.getComposantes().size() == 5);
+
+        Assert.assertTrue(user1.buyComposante(seller1 , "CPU"));
+        Assert.assertTrue(user1.buyComposante(seller1 , "bras"));
+        Assert.assertTrue(user1.buyComposante(seller1 , "bras"));
+        Assert.assertTrue(user1.buyComposante(seller1 , "ecran"));
+        Assert.assertTrue(user1.buyComposante(seller1 , "helice"));
+
+        Assert.assertTrue(seller1.getComposantes().isEmpty());
+
+        Assert.assertTrue(user1.createRobot("GPT","1234", "mover",user1.getComposantes()));
+        Assert.assertTrue(seller1.getComposantes().size() == 0);
+        Assert.assertTrue(user1.getFlotte().getRobots().size() == 1);
+
+    }
+
 }

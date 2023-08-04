@@ -74,4 +74,8 @@ public class Interet {
     public String getType(){
         return this.type;
     }
+
+    public ArrayList<Utilisateur> getInterestedUsers(){
+        return this.interestedUsers;
+    }
 }

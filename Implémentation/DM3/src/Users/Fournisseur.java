@@ -84,4 +84,8 @@ public class Fournisseur extends Acteur {
         }
         this.composantes.add(new Composante(name, type, description, 10, this));
     }
+
+    public void deleteComposante(Composante c){
+        this.composantes.remove(c);
+    }
 }

@@ -34,8 +34,8 @@ public class Prototype {
         /* ------ */
         //system.showAllUsers();
 
-        user1.createActivity("CREATION","voiture","course",new Date() , new Date(), 50);
-        user1.createActivity("CREATION","voiture","navigation",new Date() , new Date(), 100);
+        user1.createActivity("CREATION","voiture","course",0 , 10, 50);
+        user1.createActivity("CREATION","voiture","navigation",2 , 11, 100);
         user2.ajouterInteret("CREATION", "avion");
         user1.removeActivity("course");
         user2.removeActivity("navigation");

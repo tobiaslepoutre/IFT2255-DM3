@@ -116,12 +116,23 @@ public class Utilisateur extends Acteur {
         return false;
     }
 
+    public ArrayList<Interet> getInterets(){
+        return this.interets;
+    }
+
     public ArrayList<Activity> getCreatedActivities(){
         return this.createdActivities;
     }
 
-    public void createActivity(String type, String interetName, String name, Date startDate, Date endDate, int reward){
+    public boolean createActivity(String type, String interetName, String name, int startDate, int endDate, int reward){
         // crée une nouvelle activité
+
+        for(Activity a : SystemeRobotix.getInstance().getActivities()){
+            if(a.getName().equals(name)){
+                System.out.println("cette activité de meme nom existe déja");
+                return false;
+            }
+        }
 
         SystemeRobotix.getInstance().createInteret(type,interetName);
         Interet interet = SystemeRobotix.getInstance().getInteret(type, interetName);
@@ -130,6 +141,7 @@ public class Utilisateur extends Acteur {
 
         this.createdActivities.add(activity);
         this.interets.add(interet);
+        return true;
 
     }
 
@@ -150,27 +162,48 @@ public class Utilisateur extends Acteur {
 
     }
 
-    public void createRobot(String name, String serialNumber, String type, ArrayList<Composante> composants){
+    public boolean createRobot(String name, String serialNumber, String type, ArrayList<Composante> composants){
 
         boolean hasCPU = false;
+
+        if(composants.size() < 2){
+            System.out.println("the user used less than 2 components");
+            return false;
+        }
+
+        if(!this.composantes.containsAll(composants)){
+            System.out.println("the user does not have all the components");
+            return false;
+        }
 
         for(Composante c : composants){
             if(c.getType().equals("CPU")){
                 hasCPU = true;
             }
         }
+
         if(!hasCPU){
-            return;
+            System.out.println("the user did not use any CPU");
+            return false;
         }
 
         Robot r = new Robot(name, type, serialNumber, this);
-
+        // we add the components in the robot
         for(Composante c : composants){
             r.addComposante(c);
+        }
+        //we remove the component from the list of available components
+        for(Composante c : r.getComposants()){
+            this.composantes.remove(c);
         }
 
         this.flotte.ajouterRobot(r);
         r.joinTheFlotte(this.flotte);
+        return true;
+    }
+
+    public Flotte getFlotte(){
+        return this.flotte;
     }
 
     public void createTask(){
@@ -178,23 +211,51 @@ public class Utilisateur extends Acteur {
 
     }
 
-    public void buyComposante(Fournisseur seller, String type){
+    public boolean buyComposante(Fournisseur seller, String type){
+        // remove c from the seller because
+        // he no longer sells it
+
+        Composante composante = null;
         for(Composante c : seller.getComposantes()){
             if(c.getType().equals(type)){
                 c.setOwner(this);
                 this.composantes.add(c);
+                composante = c;
                 break;
             }
         }
+
+        if(composante != null){
+            seller.deleteComposante(composante);
+            return true;
+        }
+        return false;
     }
 
-    public void buyComposante(Fournisseur seller, String type, String name){
+    public boolean buyComposante(Fournisseur seller, String type, String name){
+
+        // remove c from the seller because
+        // he no longer sells it
+
+        Composante composante = null;
         for(Composante c : seller.getComposantes()){
             if(c.getType().equals(type) && c.getName().equals(name)){
                 c.setOwner(this);
                 this.composantes.add(c);
+                composante = c;
+                break;
             }
         }
+
+        if(composante != null){
+            seller.deleteComposante(composante);
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<Composante> getComposantes(){
+        return this.composantes;
     }
 
     public void assignRobotToActivity(Activity a){

@@ -169,6 +169,10 @@ public class Robot {
         c.connectToRobot(this);
     }
 
+    public ArrayList<Composante> getComposants(){
+        return this.composants;
+    }
+
     public void joinTheFlotte(Flotte f){
         this.flotte = f;
     }

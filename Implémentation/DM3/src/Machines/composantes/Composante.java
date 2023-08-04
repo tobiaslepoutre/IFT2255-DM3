@@ -36,7 +36,7 @@ public class Composante {
     }
 
     public String getType(){
-        return this.getClass().getSimpleName();
+        return this.type;
     }
 
     private void setName(String name) {

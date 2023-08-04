@@ -5,7 +5,7 @@ import Users.Utilisateur;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Activity {
+public class Activity{
 
     /* attributes*/
     private int reward;
@@ -76,6 +76,19 @@ public class Activity {
     public int getEndDate(){
         return this.endDate;
     }
+
+    public ArrayList<Utilisateur> getParticipants(){
+        return this.participants;
+    }
+
+    public ArrayList<Robot> getParticipantsRobot(){
+        return this.robots;
+    }
+
+    public Utilisateur getCreator(){
+        return this.createur;
+    }
+
 
 
 

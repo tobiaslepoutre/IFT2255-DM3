@@ -101,4 +101,18 @@ public class TestFournisseur {
 
 
     }
+
+    @Test
+    public void TestCreateComposante(){
+        Assert.assertTrue(seller1.getComposantes().isEmpty());
+
+        seller1.createComposante("CPU", "RX900" , "the fastest CPU", 20);
+        Assert.assertTrue(seller1.getComposantes().size() == 1);
+
+        seller1.createComposante("CPU", "RX900" , "the fastest CPU", 20);
+        Assert.assertTrue(seller1.getComposantes().size() == 2);
+
+        Assert.assertTrue(seller1.getComposantes().get(0).getSeller() == seller1);
+        Assert.assertTrue(seller1.getComposantes().get(1).getSeller() == seller1);
+    }
 }
