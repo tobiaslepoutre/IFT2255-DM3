@@ -41,7 +41,7 @@ public class TestIntegration {
     @Test
     public void TestIntegrationActivite1(){
 
-        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
+        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", new Date(), new Date(), 10));
 
         Assert.assertTrue(user1.getCreatedActivities().size() == 1);
         Assert.assertTrue(user2.getCreatedActivities().isEmpty());
@@ -57,13 +57,13 @@ public class TestIntegration {
         Assert.assertTrue(i.getInterestedUsers().size() == 1);
         Assert.assertTrue(i.getInterestedUsers().get(0) == user1);
 
-        Assert.assertFalse(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
+        Assert.assertFalse(user1.createActivity("CREATION", "physique", "fusée", new Date(), new Date(), 10));
         Assert.assertFalse(system.getActivities().size() == 2);
 
-        Assert.assertFalse(user2.createActivity("CREATION", "biologie", "fusée", 1, 3, 10));
+        Assert.assertFalse(user2.createActivity("CREATION", "biologie", "fusée", new Date(), new Date(), 10));
 
 
-        Assert.assertTrue(user2.createActivity("CREATION", "biologie", "molecule", 2, 3, 5));
+        Assert.assertTrue(user2.createActivity("CREATION", "biologie", "molecule", new Date(), new Date(), 5));
         Assert.assertTrue(system.getInterets().size() == 2);
         Assert.assertTrue(system.getInterets().contains(user2.getInterets().get(0)));
 
@@ -72,8 +72,8 @@ public class TestIntegration {
     @Test
     public void TestIntegrationActivite2(){
 
-        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", 1, 3, 10));
-        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", 1, 3, 10));
+        Assert.assertTrue(user1.createActivity("CREATION", "physique", "fusée", new Date(), new Date(), 10));
+        Assert.assertTrue(user2.createActivity("CREATION", "physique", "voiture", new Date(), new Date(), 10));
 
     }
 
