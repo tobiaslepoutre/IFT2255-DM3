@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Flotte {
-    private List<Robot> robots;
+    private final List<Robot> robots;
 
     public Flotte() {
         this.robots = new ArrayList<>();
@@ -18,16 +18,14 @@ public class Flotte {
     }
 
     public void supprimerRobot(Robot robot) {
-        if(this.robots.contains(robots)){
-            this.robots.remove(robot);
-        }
+        this.robots.remove(robot);
     }
 
     public List<Robot> getRobots() {
         return this.robots;
     }
 
-    public void afficherEtat() {
+    public void afficherEtatFlotte() {
         for (Robot robot : this.robots) {
             robot.afficherEtat();
         }
