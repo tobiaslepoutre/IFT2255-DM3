@@ -16,8 +16,8 @@ public class Interet {
 
 
     public Interet(String type, String name){
-        if(type.equals("CREATION") || type.equals("EDUCATION") || type.equals("GAME")){
-            this.type = type;
+        if(type.toUpperCase().equals("CREATION") || type.toUpperCase().equals("EDUCATION") || type.toUpperCase().equals("GAME")){
+            this.type = type.toUpperCase();
         }
         else{
             this.type = "OTHER";

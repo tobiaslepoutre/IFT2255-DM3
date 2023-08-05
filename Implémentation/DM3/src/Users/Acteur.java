@@ -167,7 +167,7 @@ public abstract class Acteur{
         return this.money;
     }
 
-    protected void setMoney(float money){
+    public void setMoney(float money){
         this.money = money;
     }
 

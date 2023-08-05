@@ -1,9 +1,8 @@
 package Users;
 
-import Activity.Activity;
-import Activity.Interet;
-import Machines.Flotte;
-import Machines.Robot;
+import Activity.*;
+import Activity.action.Action;
+import Machines.*;
 import Machines.composantes.Composante;
 import System.SystemeRobotix;
 
@@ -141,12 +140,16 @@ public class Utilisateur extends Acteur {
         Activity activity = SystemeRobotix.getInstance().getActivity(name);
 
         this.createdActivities.add(activity);
-        this.interets.add(interet);
+
+        if(!this.interets.contains(interet)){
+            this.interets.add(interet);
+
+        }
         return true;
 
     }
 
-    public void removeActivity(String activityName){
+    public boolean removeActivity(String activityName){
         Activity toRemove = null;
 
         for(Activity act :this.createdActivities){
@@ -157,10 +160,32 @@ public class Utilisateur extends Acteur {
         }
 
         if(toRemove != null){
-            SystemeRobotix.getInstance().removeActivity(toRemove);
+            SystemeRobotix.getInstance().removeActivity(toRemove); //will remove the activity in teh correspondding interet
             this.createdActivities.remove(toRemove);
+
+            return true;
         }
 
+        return false;
+
+    }
+
+    public void showCreatedActivities(){
+        for(Activity a : this.createdActivities){
+            System.out.println("    • " + a.getName());
+        }
+    }
+
+    public void showActivities(){
+        for(Activity a : this.activities){
+            System.out.println("    • " + a.getName());
+        }
+    }
+
+    public void showInterets(){
+        for(Interet i : this.interets){
+            System.out.println("    • type d'interet : "+i.getType() + "  , nom : "+i.getName());
+        }
     }
 
     public boolean createRobot(String name, String serialNumber, String type, ArrayList<Composante> composants){
@@ -168,7 +193,7 @@ public class Utilisateur extends Acteur {
         boolean hasCPU = false;
 
         if(composants.size() < 2){
-            System.out.println("the user used less than 2 components");
+            System.out.println("Vous avez moins de deux composantes pour la création de votre robot");
             return false;
         }
 
@@ -184,7 +209,7 @@ public class Utilisateur extends Acteur {
         }
 
         if(!hasCPU){
-            System.out.println("the user did not use any CPU");
+            System.out.println("vous n'avez pas utilisez de CPU");
             return false;
         }
 
@@ -207,8 +232,31 @@ public class Utilisateur extends Acteur {
         return this.flotte;
     }
 
-    public void createTask(){
+    public boolean createTask(String activityName, Date executionDate, ArrayList<Action> actionsOfTask){
         //crée une task et l'ajoute ou non à une activité
+
+        if(actionsOfTask.isEmpty()){
+            return false;
+        }
+        Activity activity = null;
+        for(Activity a : this.createdActivities){
+            if(a.getName().toUpperCase().equals(activityName.toUpperCase())){
+                activity = a;
+            }
+        }
+
+        if(activity == null){
+            return false;
+        }
+
+        Tache tache = new Tache(executionDate, activity);
+        for(Action a : actionsOfTask){
+
+            tache.addAction(a);
+            a.assignToTask(tache);
+
+        }
+        return true;
 
     }
 
@@ -266,6 +314,15 @@ public class Utilisateur extends Acteur {
         return false;
     }
 
+    public Composante getComposante(String name){
+        for(Composante c : this.composantes){
+            if(c.getName().equals(name)){
+                return c;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<Composante> getComposantes(){
         return this.composantes;
     }
@@ -295,10 +352,12 @@ public class Utilisateur extends Acteur {
                 if(!this.activities.contains(activity)){
                     this.activities.add(activity);
                 }
+                System.out.println("Vous avez inscrit votre robot :"+r.getName()+" `l'acivité "+ activity.getName());
                 return true;
             }
         }
 
+        System.out.println("vous n'avez pas de robot disponible durant la periode couverte par l'activité");
         return false;
     }
 

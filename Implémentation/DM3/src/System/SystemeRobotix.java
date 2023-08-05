@@ -177,7 +177,14 @@ public class SystemeRobotix {
                 System.out.println("• Following : ");
                 user.showFollowing();
 
-                //TODO : afficher les activités et les interêts (implementer le package Activity)
+                System.out.println("Activité crée :");
+                user.showCreatedActivities();
+
+                System.out.println("Activité inscrite :");
+                user.showActivities();
+
+                System.out.println("Centre d'interet :");
+                user.showInterets();
 
                 return true;
             }
@@ -227,6 +234,15 @@ public class SystemeRobotix {
         }
     }
 
+    public Fournisseur getSeller(String name){
+        for(Fournisseur seller : this.getSellers()) {
+            if(seller.getFirstName().toUpperCase().equals(name.toUpperCase())){
+                return seller;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<Interet> getInterets(){
         return this.interets;
     }
@@ -234,7 +250,7 @@ public class SystemeRobotix {
     public boolean createInteret(String type, String name){
         //crée un nouvel interet si il n'existe pas déja
         for(Interet interet : this.interets){
-            if(interet.getName().equals(name) && interet.getType().equals(type)){
+            if(interet.getName().toUpperCase().equals(name.toUpperCase()) && interet.getType().toUpperCase().equals(type.toUpperCase())){
                 return false;
             }
         }
@@ -244,18 +260,30 @@ public class SystemeRobotix {
 
     public Interet getInteret(String type, String name){
         //retourne un interet voulu si il existe sinon null
+
+        if(!(type.toUpperCase().equals("CREATION") || type.toUpperCase().equals("EDUCATION") || type.toUpperCase().equals("GAME"))){
+            type = "OTHER";
+        }
+
+        type = type.toUpperCase();
+
         for(Interet interet : this.interets){
-            if(interet.getName().equals(name) && interet.getType().equals(type)){
+            if(interet.getName().toUpperCase().equals(name.toUpperCase()) && interet.getType().toUpperCase().equals(type.toUpperCase())){
                 return interet;
             }
         }
         return null;
     }
 
-    public void createActivity(int reward, Date startDate, Date endDate, String name, Utilisateur creator, Interet i){
-        //TODO : check if the activity is unique
+    public boolean createActivity(int reward, Date startDate, Date endDate, String name, Utilisateur creator, Interet i){
+        for(Activity a : this.activities){
+            if(a.getName().toUpperCase().equals(name.toUpperCase())){
+                return false;
+            }
+        }
         i.addInterestedUser(creator.getPseudo());
         this.activities.add(new Activity(reward,startDate,endDate,name, creator,i));
+        return true;
     }
 
     public Activity getActivity(String name){

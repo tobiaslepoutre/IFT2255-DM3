@@ -79,10 +79,10 @@ public class Fournisseur extends Acteur {
 
         //TODO : check if the capacity is still enoutgh
         if (type.equals("CPU")) {
-            this.composantes.add(new CPU(name, description, 10, this));
+            this.composantes.add(new CPU(name, description, price, this));
             return;
         }
-        this.composantes.add(new Composante(name, type, description, 10, this));
+        this.composantes.add(new Composante(name, type, description, price, this));
     }
 
     public void deleteComposante(Composante c){

@@ -34,4 +34,8 @@ public abstract class Action {
         return this.duration;
     }
 
+    public void assignToTask(Tache t){
+        this.task = t;
+    }
+
 }

@@ -3,6 +3,8 @@ import Users.Fournisseur;
 import Users.Utilisateur;
 import System.SystemeRobotix;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -37,12 +39,16 @@ public class Prototype {
             System.out.println("\nVous avez actuellement "+ user.getMoney() + "CAD");
             System.out.println("Que voulez vous faire ? tapez un des choix correspondant ou out pour quittez le système : \n");
 
-            System.out.println("showProfile     -> voir un profil (pseudo)");
-            System.out.println("showMyProfile   -> voir mon profil");
-            System.out.println("showAll         -> voir tous les pseudo des profils");
-            System.out.println("follow          -> suivre un autre utilisateur (pseudo)");
-            System.out.println("findSeller      -> trouver un fournisseur (nom, adresse, Type de composant voulu)");
-            System.out.println("buyComponent    -> Acheter un composant chez un fournisseur");
+            System.out.println("showProfile        -> voir un profil (pseudo)");
+            System.out.println("showMyProfile      -> voir mon profil");
+            System.out.println("showAll            -> voir tous les pseudo des profils");
+            System.out.println("follow             -> suivre un autre utilisateur (pseudo)");
+            System.out.println("findSeller         -> trouver un fournisseur (nom, adresse, Type de composant voulu)");
+            System.out.println("buyComponent       -> Acheter un composant chez un fournisseur");
+            System.out.println("createRobot        -> crée un robot en utilisant nos composant actuel");
+            System.out.println("manageActivities   -> créer, participé, ou supprimer une activité");
+            System.out.println("manageTasks        -> créer et assigner une tache à une activité");
+            //TODO : buyMultipleCoponent pour se faciliter la vie
 
             System.out.println("\n");
 
@@ -74,10 +80,21 @@ public class Prototype {
                     Prototype.buyComponent();
                     break;
 
+                case "CREATEROBOT":
+                    Prototype.createRobot();
+                    break;
+
+                case "MANAGEACTIVITIES":
+                    Prototype.manageActivities();
+                    break;
+
                 case "OUT":
                     Prototype.online = false;
+                    break;
 
-                default:break;
+                default:
+                    System.out.println("commande non reconnu par le systeme\n");
+                    break;
             }
 
         }
@@ -181,6 +198,139 @@ public class Prototype {
 
     }
 
+    public static void createRobot(){
+
+        // choisir un assembleur qui fournira le numéro de série
+        // l'assemblage est payant
+
+        System.out.println("voici la liste des fournisseur capable d'assembler vore robot, le prix d'assemblage est de 10CAD");
+        for(Fournisseur seller : system.getSellers()){
+            System.out.println("• "+ seller.getFirstName());
+        }
+
+        System.out.print("\nEntrez le nom du fournisseur que vous choisissez : ");
+        String sellerName = Prototype.scanner.nextLine();
+        Fournisseur seller = system.getSeller(sellerName);
+
+        if(seller == null){
+            System.out.println("Ce vendeurn'existe pas");
+            return;
+        }
+
+        if(user.getMoney() < 10){
+            System.out.println("Vousn'avez pas assez d'argent pour l'assemblage");
+            return;
+        }
+
+        String serialNumber = ""+seller.hashCode();
+
+        System.out.print("nom du robot : ");
+        String nom = Prototype.scanner.nextLine();
+
+        System.out.print("type du robot : ");
+        String type = Prototype.scanner.nextLine();
+
+        System.out.println("vous  devez maintenant selectionné les composantes que vos founissez au robot\n voici la liste de vos composantes : ");
+
+        ArrayList<Composante> forBuild = new ArrayList<>();
+
+        while(true){
+            for(Composante c : user.getComposantes()){
+                if(!forBuild.contains(c)){
+                    System.out.println("• "+ c.getName());
+                }
+            }
+            System.out.println("donner le nom de la prochaine composante que vous voulez include dans votre robot \nOu tapez exit pour annulez la creation du robot\nOu tapez pour terminer la creation du robot  : ");
+
+            String text = Prototype.scanner.nextLine();
+            if(text.toUpperCase().equals("EXIT")){
+                return;
+            }
+
+            if(text.toUpperCase().equals("TERMINER")){
+                break;
+            }
+
+            Composante c = user.getComposante(text);
+
+            if(c == null){
+                System.out.println("vous ne disposez pas de cette composante");
+                continue;
+            }
+            else{
+                forBuild.add(c);
+            }
+
+        }
+
+        if(user.createRobot(nom, serialNumber, type, forBuild)){
+            System.out.println("votre robot à parfaitement été crée");
+
+            user.setMoney(user.getMoney() - 20);
+            seller.setMoney(seller.getMoney() + 20);
+
+            return;
+        }
+    }
+
+    public static void manageActivities(){
+        System.out.println("comment souhaitez vous gerer les activité ?");
+        System.out.print("creation pour crée une nouvelle activité, remove pour en supprimer et attempt pour participer : ");
+        String choice = Prototype.scanner.nextLine();
+
+        if(choice.toUpperCase().equals("CREATION")){
+
+            System.out.println("Veuillez s'il vous plait rentrer les informations concernant votre activité");
+
+            System.out.print("nom de l'activité  : ");
+            String name = Prototype.scanner.nextLine();
+
+            System.out.print("date de départ dans le format yyyy-mm-jj : ");
+            String sdate = Prototype.scanner.nextLine();
+            LocalDate localStartDate = LocalDate.parse(sdate);
+            Date startDate = Date.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            System.out.print("date de départ dans le format yyyy-mm-jj : ");
+            String edate = Prototype.scanner.nextLine();
+            LocalDate localEndDate = LocalDate.parse(edate);
+            Date endDate = Date.from(localEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            System.out.print("le nombre de points en récompense   : ");
+            int reward = Integer.parseInt(Prototype.scanner.nextLine());
+
+            System.out.print("type d'interet pour cette activité : ");
+            String type = Prototype.scanner.nextLine();
+
+            System.out.print("nom de l'interet de cette activité : ");
+            String interetName = Prototype.scanner.nextLine();
+
+
+            if(user.createActivity(type, interetName, name, startDate, endDate, reward)){
+                System.out.println("L'activité à été crée avec succès");
+            }
+        }
+
+        else if(choice.toUpperCase().equals("REMOVE")){
+            System.out.print("Nom de l'activité : ");
+            String name = Prototype.scanner.nextLine();
+
+            if(user.removeActivity(name)){
+                System.out.println("L'activité à bien été supprimmé");
+            }
+            else{
+                System.out.println("L'activité n'existe pas ou vous n'en êtes pas le créateur");
+                return;
+            }
+        }
+
+        else if(choice.toUpperCase().equals("ATTEMPT")){
+            System.out.print("Nom de l'activité : ");
+            String name = Prototype.scanner.nextLine();
+
+            user.assignRobotToActivity(name);
+        }
+    }
+
     public static void connexion(){
         while(true){
             System.out.println("\nTAPEZ out pour sortir du systeme,  connexion pour vous connecter ou inscription pour vous inscrire : ");
@@ -273,6 +423,12 @@ public class Prototype {
 
         system.loginUser("belgio","123456").followUser("toblep");
         system.loginUser("belgio","123456").followSeller(("Victor"));
+
+        Utilisateur user1 = system.loginUser("belgio", "123456");
+
+        user1.createActivity("creation", "robotique", "atelier" , new Date(2023,05,01), new Date(2023,05,05), 150);
+        user1.createActivity("creation", "robotique", "programation" , new Date(2023,05,01), new Date(2023,04,05), 150);
+        user1.createActivity("education", "automobile", "course" , new Date(2023,06,01), new Date(2023,06,05), 150);
 
         // create composante
         Fournisseur seller1 = system.loginSeller("Theo","123456");
