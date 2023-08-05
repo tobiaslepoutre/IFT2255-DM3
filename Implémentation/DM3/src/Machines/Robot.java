@@ -57,8 +57,8 @@ public class Robot {
 
     public boolean isBusy(Date startDate, Date endDate) {
 
-        // on parcours toutes les activité et on check que la date n'empiete pas sur
-        //la plage des dates d'activité
+        // on parcourt toutes les activités et on vérifie que la date n'empiète pas sur
+        // la plage horaire des autres activités.
         for(Activity a : this.activities){
             if(!(endDate.before(a.getStartDate()) || startDate.after(a.getEndDate()))){
                 return true;
