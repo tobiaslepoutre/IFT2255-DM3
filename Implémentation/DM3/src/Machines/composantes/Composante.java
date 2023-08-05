@@ -19,7 +19,8 @@ public class Composante {
     private String type;
     private String description;
     private float price;
-    public static ArrayList<String> types = new ArrayList<>(Arrays.asList("roue","bras","helice","camera", "hautParleur","micro","ecran"));
+    public static ArrayList<String> types = new ArrayList<>(Arrays.asList("roue","bras","helice","camera", 
+            "hautParleur","micro","ecran"));
 
     /* associations */
     private Utilisateur owner;
