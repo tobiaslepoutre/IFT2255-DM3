@@ -9,21 +9,37 @@ import System.SystemeRobotix;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * La classe Utilisateur représente un utilisateur du système Robotix.
+ * C'est une sous-classe de la classe Acteur.
+ *  * @author Giovanni Belval
+ *  * @version 1.0
+ */
 public class Utilisateur extends Acteur {
-    
-    /* attributes */
+
+    /* Attributs */
     private String secondName;
     private String pseudo;
     private int    points;
 
-    /* Assosiations */
+    /* Associations */
     private ArrayList<Interet> interets;
     private ArrayList<Activity> createdActivities;
     private ArrayList<Activity> activities;
     private Flotte flotte;
     private ArrayList<Composante> composantes;
-    
-    /* constructeur */
+
+    /**
+     * Constructeur de la classe Utilisateur
+     * @param compagnieName Le nom de la compagnie de l'utilisateur
+     * @param firstName Le prénom de l'utilisateur
+     * @param secondName Le second nom de l'utilisateur
+     * @param password Le mot de passe de l'utilisateur
+     * @param pseudo Le pseudo de l'utilisateur
+     * @param email L'adresse email de l'utilisateur
+     * @param phoneNumber Le numéro de téléphone de l'utilisateur
+     * @throws Exception Lance une exception si un problème survient lors de la création de l'utilisateur
+     */
     public Utilisateur(String compagnieName,String firstName,String secondName, String password, String pseudo,String email ,String phoneNumber) throws Exception{
         super(compagnieName,firstName,password,email,phoneNumber);
         this.setPoints(0);
@@ -38,7 +54,11 @@ public class Utilisateur extends Acteur {
         this.flotte = new Flotte();
     }
 
-    /* Methods*/
+    /**
+     * Méthode pour changer le pseudo de l'utilisateur
+     * @param pseudo Le nouveau pseudo de l'utilisateur
+     * @return Retourne true si le pseudo a été changé avec succès, false sinon
+     */
     public boolean changePseudo(String pseudo){
         try {
             this.setPseudo(pseudo);
@@ -49,6 +69,11 @@ public class Utilisateur extends Acteur {
         }
     }
 
+    /**
+     * Méthode pour suivre un autre utilisateur
+     * @param pseudo Le pseudo de l'utilisateur à suivre
+     * @return Retourne true si l'utilisateur est suivi avec succès, false sinon
+     */
     public boolean followUser(String pseudo){
         if(pseudo.toUpperCase().equals(this.pseudo.toUpperCase())){
             return false;
@@ -56,26 +81,51 @@ public class Utilisateur extends Acteur {
         return super.followUser(pseudo);
     }
 
+    /**
+     * Méthode pour ajouter des points à l'utilisateur
+     * @param points Le nombre de points à ajouter
+     */
     public void addPoints(int points){
         this.setPoints(this.points + points);
     }
 
+    /**
+     * Méthode pour obtenir le nombre de points de l'utilisateur
+     * @return Le nombre de points de l'utilisateur
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * Méthode pour obtenir le pseudo de l'utilisateur
+     * @return Le pseudo de l'utilisateur
+     */
     public String getPseudo() {
         return pseudo;
     }
 
+    /**
+     * Méthode pour obtenir le second nom de l'utilisateur
+     * @return Le second nom de l'utilisateur
+     */
     public String getSecondName() {
         return secondName;
     }
 
+    /**
+     * Méthode privée pour définir le nombre de points de l'utilisateur
+     * @param points Le nombre de points à définir
+     */
     private void setPoints(int points) {
         this.points = points;
     }
 
+    /**
+     * Méthode privée pour définir le pseudo de l'utilisateur
+     * @param pseudo Le pseudo à définir
+     * @throws Exception Lance une exception si le pseudo est déjà utilisé
+     */
     private void setPseudo(String pseudo) throws Exception {
 
         for(Utilisateur user : SystemeRobotix.getInstance().getUsers()){
@@ -86,14 +136,29 @@ public class Utilisateur extends Acteur {
         this.pseudo = pseudo;
     }
 
-     private void setSecondName(String secondName) {
+
+    /**
+     * Méthode privée pour définir le second nom de l'utilisateur
+     * @param secondName Le second nom à définir
+     */
+    private void setSecondName(String secondName) {
         this.secondName = secondName;
     }
 
+    /**
+     * Méthode pour représenter l'utilisateur sous forme de chaîne de caractères
+     * @return Une représentation textuelle de l'utilisateur
+     */
     public String toString() {
         return "Utilisateur | Pseudo : " + this.getPseudo() + ", Name : " + this.getFirstName();
     }
 
+    /**
+     * Méthode pour ajouter un intérêt à l'utilisateur
+     * @param type Le type de l'intérêt
+     * @param name Le nom de l'intérêt
+     * @return Retourne true si l'intérêt a été ajouté avec succès, false sinon
+     */
     public boolean ajouterInteret(String type, String name){
         if(this.interets.size() == 10){
             return false;
@@ -104,6 +169,11 @@ public class Utilisateur extends Acteur {
         return true;
     }
 
+    /**
+     * Méthode pour supprimer un intérêt de l'utilisateur
+     * @param name Le nom de l'intérêt à supprimer
+     * @return Retourne true si l'intérêt a été supprimé avec succès, false sinon
+     */
     public boolean suppripmerInteret(String name){
         for(Interet i : SystemeRobotix.getInstance().getInterets()){
             if(i.getName().toUpperCase().equals(name.toUpperCase()) && this.interets.contains(i)){
@@ -112,18 +182,37 @@ public class Utilisateur extends Acteur {
                 return true;
             }
         }
-
         return false;
     }
 
+    /**
+     * Méthode pour obtenir la liste des intérêts de l'utilisateur
+     * @return La liste des intérêts de l'utilisateur
+     */
     public ArrayList<Interet> getInterets(){
         return this.interets;
     }
 
+    /**
+     * Méthode pour obtenir la liste des activités créées par l'utilisateur
+     * @return La liste des activités créées par l'utilisateur
+     */
     public ArrayList<Activity> getCreatedActivities(){
         return this.createdActivities;
     }
 
+    /**
+     * Crée une nouvelle activité et l'ajoute à la liste des activités créées.
+     * Si l'activité est créée avec succès, elle est ajoutée à la liste des intérêts de l'utilisateur.
+     *
+     * @param type Le type de l'activité à créer.
+     * @param interetName Le nom de l'intérêt associé à l'activité.
+     * @param name Le nom de l'activité.
+     * @param startDate La date de début de l'activité.
+     * @param endDate La date de fin de l'activité.
+     * @param reward La récompense pour l'activité.
+     * @return true si l'activité est créée avec succès, false sinon.
+     */
     public boolean createActivity(String type, String interetName, String name, Date startDate, Date endDate, int reward){
         // crée une nouvelle activité
 
@@ -149,6 +238,12 @@ public class Utilisateur extends Acteur {
 
     }
 
+    /**
+     * Supprime une activité de la liste des activités créées.
+     *
+     * @param activityName Le nom de l'activité à supprimer.
+     * @return true si l'activité est supprimée avec succès, false sinon.
+     */
     public boolean removeActivity(String activityName){
         Activity toRemove = null;
 
@@ -170,24 +265,42 @@ public class Utilisateur extends Acteur {
 
     }
 
+    /**
+     * Affiche toutes les activités créées par l'utilisateur.
+     */
     public void showCreatedActivities(){
         for(Activity a : this.createdActivities){
             System.out.println("    • " + a.getName());
         }
     }
 
+    /**
+     * Affiche toutes les activités auxquelles l'utilisateur participe.
+     */
     public void showActivities(){
         for(Activity a : this.activities){
             System.out.println("    • " + a.getName());
         }
     }
 
+    /**
+     * Affiche tous les intérêts de l'utilisateur.
+     */
     public void showInterets(){
         for(Interet i : this.interets){
             System.out.println("    • type d'interet : "+i.getType() + "  , nom : "+i.getName());
         }
     }
 
+    /**
+     * Crée un robot et l'ajoute à la flotte de l'utilisateur.
+     *
+     * @param name Le nom du robot.
+     * @param serialNumber Le numéro de série du robot.
+     * @param type Le type du robot.
+     * @param composants La liste des composants à ajouter au robot.
+     * @return true si le robot est créé avec succès, false sinon.
+     */
     public boolean createRobot(String name, String serialNumber, String type, ArrayList<Composante> composants){
 
         boolean hasCPU = false;
@@ -228,10 +341,23 @@ public class Utilisateur extends Acteur {
         return true;
     }
 
+    /**
+     * Retourne la flotte de l'utilisateur.
+     *
+     * @return La flotte de l'utilisateur.
+     */
     public Flotte getFlotte(){
         return this.flotte;
     }
 
+    /**
+     * Crée une tâche et l'associe à une activité.
+     *
+     * @param activityName Le nom de l'activité à laquelle la tâche sera associée.
+     * @param executionDate La date d'exécution de la tâche.
+     * @param actionsOfTask La liste des actions à ajouter à la tâche.
+     * @return true si la tâche est créée avec succès, false sinon.
+     */
     public boolean createTask(String activityName, Date executionDate, ArrayList<Action> actionsOfTask){
         //crée une task et l'ajoute ou non à une activité
 
@@ -260,6 +386,13 @@ public class Utilisateur extends Acteur {
 
     }
 
+    /**
+     * Achète une composante auprès d'un fournisseur.
+     *
+     * @param seller Le fournisseur auprès duquel la composante sera achetée.
+     * @param type Le type de la composante à acheter.
+     * @return true si l'achat est effectué avec succès, false sinon.
+     */
     public boolean buyComposante(Fournisseur seller, String type){
         // remove c from the seller because
         // he no longer sells it
@@ -281,6 +414,14 @@ public class Utilisateur extends Acteur {
         return false;
     }
 
+    /**
+     * Achète une composante spécifique auprès d'un fournisseur.
+     *
+     * @param seller Le fournisseur auprès duquel la composante sera achetée.
+     * @param type Le type de la composante à acheter.
+     * @param name Le nom de la composante à acheter.
+     * @return true si l'achat est effectué avec succès, false sinon.
+     */
     public boolean buyComposante(Fournisseur seller, String type, String name){
 
         // remove c from the seller because
@@ -292,7 +433,7 @@ public class Utilisateur extends Acteur {
                 // we check if the user has enougth money to buy the component
 
                 if(this.getMoney() >= c.getPrice()){
-                    // on met a jour les portefeuilles de l'acheteur et du vendeur.
+                    // on met à jour les portefeuilles de l'acheteur et du vendeur.
 
                     this.setMoney(this.getMoney() - c.getPrice());
                     c.getSeller().setMoney(this.getMoney() + c.getPrice());
@@ -314,6 +455,12 @@ public class Utilisateur extends Acteur {
         return false;
     }
 
+    /**
+     * Récupère une composante à partir de son nom.
+     *
+     * @param name Le nom de la composante à récupérer.
+     * @return La composante si elle est trouvée, null sinon.
+     */
     public Composante getComposante(String name){
         for(Composante c : this.composantes){
             if(c.getName().equals(name)){
@@ -323,11 +470,21 @@ public class Utilisateur extends Acteur {
         return null;
     }
 
+    /**
+     * Retourne la liste des composantes de l'utilisateur.
+     *
+     * @return La liste des composantes de l'utilisateur.
+     */
     public ArrayList<Composante> getComposantes(){
         return this.composantes;
     }
 
-
+    /**
+     * Affecte un robot à une activité.
+     *
+     * @param activityName Le nom de l'activité à laquelle le robot sera affecté.
+     * @return true si le robot est affecté avec succès, false sinon.
+     */
     public boolean assignRobotToActivity(String activityName){
         Activity activity = null;
 
@@ -360,5 +517,4 @@ public class Utilisateur extends Acteur {
         System.out.println("vous n'avez pas de robot disponible durant la periode couverte par l'activité");
         return false;
     }
-
 }
