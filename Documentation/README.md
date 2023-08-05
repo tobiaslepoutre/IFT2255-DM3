@@ -4,7 +4,7 @@
 
 ## Description du projet:
 
-Robotix est un outil en ligne de commande permettant à l'utilisateur de \
+Robotix est un outil en ligne de commande permetant à l'utilisateur de \
 contrôler ses robots, attribuer des tâches, surveiller l'utilisation des \
 ressources, identifier les problèmes et acheter des composantes auprès de \
 fournisseurs. Il offre aussi la possibilité de participer à diverses activités, \
@@ -62,27 +62,31 @@ IntelliJ(.java), Maven(JAR), Visual Paradigm(.vpp)
   - 20 actions
   - 10 tâches
   - 10 intérêts
-  - 5 activités par utilisateurs, dont au moins une non débutée, une en cours \
-  et une terminée
+  - 5 activités par utilisateurs, dont au moins une non débutée, une en \
+  cours et une terminée
 
 
 ## Connexion:
 
 - Informations de connexion initiales:
   - Utilisateurs: \
-  nom, prénom, courriel, pseudo, mot de passe, numéro de téléphone et \
-  nom d'entreprise (facultatif).
+  nom, prénom, courriel, pseudo, mot de passe, numéro de téléphone \
+  et nom d'entreprise (facultatif).
   - Fournisseur: \
-  nom d'entreprise, prénom, courriel, mot de passe, numéro de téléphone \
-  localisation et capacité de production.
+  nom d'entreprise, prénom, courriel, mot de passe, numéro de \
+  téléphone, localisation et capacité de production.
   
 
 - Éxecuter l'application:
-  -     Ouvrir le projet : Lancer IntelliJ IDEA et ouvrir le projet.
+  -     Ouvrir le projet:
+        Lancer IntelliJ IDEA et ouvrir le projet.
 
-  -     Ouvrir le fichier source: Implémentation -> DM3 -> src -> Prototype.java.
+  -     Ouvrir le fichier source:  
+        Implémentation -> DM3 -> src -> Prototype.java.
 
-  -     Exécuter l'application : Choisir l'option Run 'Prototype.java'.
+  -     Exécuter l'application: 
+        Choisir l'option 'Run Prototype.java'.
 
-    Pour interagir avec Robotix, il faudra ensuite utiliser la ligne de commande (Terminal) et \
-  la console pour executer des actions et voir les sorties de l'application.
+    Pour interagir avec Robotix, il faudra ensuite utiliser la ligne 
+  de commande (Terminal) et la console pour executer des actions et \
+  voir les sorties de l'application.
