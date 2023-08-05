@@ -10,7 +10,7 @@ import java.util.List;
  * d'afficher l'état de chaque robot dans la flotte.
  * </p>
  *
- * @author VotreNom
+ * @author Tobias Lepoutre
  * @version 1.0
  */
 public class Flotte {
