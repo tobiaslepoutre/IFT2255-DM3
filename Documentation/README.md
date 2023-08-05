@@ -16,8 +16,12 @@ suivre d'autres utilisateurs et recevoir des notifications pertinentes.
 Oracle OpenJDK version 20.0.2
 
 
+- Bibliothèques utilisées: \
+JUnit4 et JUnit5.8.1
+
+
 - Applications requises: \
-IntelliJ(.java), Maven(JAR), Visual Paradigm(.vpp)
+IntelliJ(.java), Maven(JAR) et Visual Paradigm(.vpp)
 
 ## Fonctionnalités & données initiales:
 
