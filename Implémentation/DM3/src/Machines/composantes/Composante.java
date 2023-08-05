@@ -21,7 +21,7 @@ public class Composante {
     private Robot robot;
 
     public Composante(String name, String type, String description, float price, Fournisseur seller) {
-        // on initialize en précisant le vendeur
+        // on initialise en précisant le vendeur
         this.name = name;
         this.type = type;
         this.description = description;
