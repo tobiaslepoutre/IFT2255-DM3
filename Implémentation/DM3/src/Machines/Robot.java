@@ -60,7 +60,7 @@ public class Robot {
         // on parcours toutes les activité et on check que la date n'empiete pas sur
         //la plage des dates d'activité
         for(Activity a : this.activities){
-            if(endDate.after(a.getStartDate()) || startDate.before(a.getEndDate())){
+            if(!(endDate.before(a.getStartDate()) || startDate.after(a.getEndDate()))){
                 return true;
             }
         }
