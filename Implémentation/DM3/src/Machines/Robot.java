@@ -31,7 +31,7 @@ public class Robot {
     private float speed;
     private int powerLevel;
 
-    /* assosiations */
+    /* associations */
     private Utilisateur owner;
     private Flotte flotte;
     private ArrayList<Tache> taches;
@@ -39,7 +39,7 @@ public class Robot {
     private ArrayList<Composante> composants;
 
     /**
-     * Construit un nouveau robot avec un nom, un type, un numéro de série, et un propriétaire spécifiés.
+     * Construit un nouveau robot avec un nom, un type, un numéro de série, et un propriétaire spécifié.
      *
      * @param name Le nom du robot.
      * @param type Le type du robot.
@@ -263,7 +263,7 @@ public class Robot {
     }
 
     /**
-     * Ajoute le robot à une activité si il n'y participe pas déjà.
+     * Ajoute le robot à une activité s'il n'y participe pas déjà.
      *
      * @param a L'activité à laquelle le robot doit participer.
      */
