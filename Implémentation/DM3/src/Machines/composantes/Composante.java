@@ -146,8 +146,6 @@ public class Composante {
      * @param robot Le robot auquel la composante doit être connectée.
      */
     public void connectToRobot(Robot robot){
-        //use when a user construc a robot
-        //using that composante
         this.robot = robot;
     }
 
@@ -155,7 +153,6 @@ public class Composante {
      * Méthode pour déconnecter la composante du robot.
      */
     public void deconstruct(){
-        //use when you whant to dismantle that part
         this.robot = null;
     }
 }
