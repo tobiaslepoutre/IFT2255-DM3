@@ -4,7 +4,7 @@
 
 ## Description du projet:
 
-Robotix est un outil en ligne de commande permetant à l'utilisateur de \
+Robotix est un outil en ligne de commande permettant à l'utilisateur de \
 contrôler ses robots, attribuer des tâches, surveiller l'utilisation des \
 ressources, identifier les problèmes et acheter des composantes auprès de \
 fournisseurs. Il offre aussi la possibilité de participer à diverses activités, \
