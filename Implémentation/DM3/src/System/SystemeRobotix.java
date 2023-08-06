@@ -1,7 +1,7 @@
 package System;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 
 import Activity.Activity;
 import Activity.Interet;
@@ -372,7 +372,7 @@ public class SystemeRobotix {
      * @param i L'intérêt lié à l'activité à créer.
      * @return boolean Indique si l'activité a été créée et ajoutée avec succès.
      */
-    public boolean createActivity(int reward, Date startDate, Date endDate, String name, Utilisateur creator,
+    public boolean createActivity(int reward, LocalDate startDate, LocalDate endDate, String name, Utilisateur creator,
                                   Interet i) {
         for(Activity a : this.activities){
             if(a.getName().toUpperCase().equals(name.toUpperCase())){

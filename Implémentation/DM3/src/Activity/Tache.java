@@ -4,7 +4,7 @@ import Activity.action.Action;
 import Machines.Robot;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * La classe Tache représente une tâche à exécuter dans le cadre d'une activité.
@@ -12,7 +12,7 @@ import java.util.Date;
  * @version 1.0
  */
 public class Tache {
-    private Date executionDate;
+    private LocalDate executionDate;
 
     /* Associations */
     private ArrayList<Action> actions;
@@ -24,7 +24,7 @@ public class Tache {
      *
      * @param executionDate La date à laquelle la tâche doit être exécutée.
      */
-    public Tache(Date executionDate){
+    public Tache(LocalDate executionDate){
         this.executionDate = executionDate;
         this.actions = new ArrayList<>();
     }
@@ -35,7 +35,7 @@ public class Tache {
      * @param executionDate La date à laquelle la tâche doit être exécutée.
      * @param activity L'activité à laquelle la tâche est associée.
      */
-    public Tache(Date executionDate, Activity activity){
+    public Tache(LocalDate executionDate, Activity activity){
         this.executionDate = executionDate;
         this.actions = new ArrayList<>();
         this.activity = activity;
@@ -65,8 +65,17 @@ public class Tache {
      *
      * @return La date d'exécution de la tâche.
      */
-    public Date getExecutionDate(){
+    public LocalDate getExecutionDate(){
         return this.getExecutionDate();
     }
-    
+
+    /**
+     * Renvoie la liste des actiosn dans une taches
+     *
+     * @return La listes des actions d'une taches ArrayList<Action>()
+     */
+    public ArrayList<Action> getActions(){
+        return this.actions;
+    }
+
 }

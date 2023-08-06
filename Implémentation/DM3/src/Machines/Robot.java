@@ -6,7 +6,8 @@ import Machines.composantes.Composante;
 import Users.Utilisateur;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashMap;
 
 /**
  * La classe Robot représente un robot individuel.
@@ -30,6 +31,7 @@ public class Robot {
     private float positionZ;
     private float speed;
     private int powerLevel;
+    public HashMap<String, ArrayList<Integer>> statistiques;
 
     /* associations */
     private Utilisateur owner;
@@ -62,6 +64,10 @@ public class Robot {
         this.activities = new ArrayList<>();
         this.composants = new ArrayList<>();
         this.owner = owner;
+
+        this.statistiques = new HashMap<>();
+        this.statistiques.put("consommationCPU" , new ArrayList<>());
+        this.statistiques.put("powerLevelUsed" , new ArrayList<>());
     }
 
     /**
@@ -83,11 +89,11 @@ public class Robot {
      * @param endDate La date de fin de la période.
      * @return true si le robot est occupé, false sinon.
      */
-    public boolean isBusy(Date startDate, Date endDate) {
+    public boolean isBusy(LocalDate startDate, LocalDate endDate) {
         // on parcourt toutes les activités et on vérifie que la date n'empiète pas sur
         // la plage horaire des autres activités.
         for(Activity a : this.activities){
-            if(!(endDate.before(a.getStartDate()) || startDate.after(a.getEndDate()))){
+            if(!(endDate.isBefore(a.getStartDate()) || startDate.isAfter(a.getEndDate()))){
                 return true;
             }
         }
@@ -300,5 +306,13 @@ public class Robot {
      */
     public void joinTheFlotte(Flotte f){
         this.flotte = f;
+    }
+
+    /**
+     *
+     *
+     */
+    public Utilisateur getOwner(){
+        return this.owner;
     }
 }

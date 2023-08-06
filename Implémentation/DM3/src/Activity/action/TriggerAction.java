@@ -2,7 +2,7 @@ package Activity.action;
 
 import Activity.Tache;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * La classe TriggerAction étend la classe Action et représente une action déclenchée.
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class TriggerAction extends Action {
 
-    private int executionDate;
+    private LocalDate executionDate;
 
 
     /**
@@ -23,7 +23,7 @@ public class TriggerAction extends Action {
      * @param duration La durée de l'action.
      * @param executionDate La date d'exécution de l'action.
      */
-    public TriggerAction(int duration , int executionDate){
+    public TriggerAction(int duration , LocalDate executionDate){
         super(duration, false);
         this.executionDate = executionDate;
         this.type = this.getClass().getSimpleName();
@@ -38,7 +38,7 @@ public class TriggerAction extends Action {
      * @param task La tâche associée à l'action.
      * @param executionDate La date d'exécution de l'action.
      */
-    public TriggerAction(int duration , Tache task, int executionDate){
+    public TriggerAction(int duration , Tache task, LocalDate executionDate){
         super(duration, false, task);
         this.executionDate = executionDate;
         this.type = this.getClass().getSimpleName();

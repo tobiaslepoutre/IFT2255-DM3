@@ -1,9 +1,10 @@
 package Activity;
 
+import Activity.action.Action;
 import Machines.Robot;
 import Users.Utilisateur;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * La classe Activity représente une activité dans le système.
@@ -14,15 +15,15 @@ public class Activity{
 
     /* Attributs*/
     private int reward;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String name;
 
     /* Associations */
     private ArrayList<Utilisateur> participants;
     private Utilisateur createur;
     private ArrayList<Robot> robots;
-    private ArrayList<Interet> interets;
+    private Interet interet;
     private ArrayList<Tache> taches;
 
     /**
@@ -35,7 +36,7 @@ public class Activity{
      * @param createur Le créateur de l'activité.
      * @param interet L'interet lié à l'activité.
      */
-    public Activity(int reward, Date startDate , Date endDate , String name, Utilisateur createur, Interet interet)  {
+    public Activity(int reward, LocalDate startDate , LocalDate endDate , String name, Utilisateur createur, Interet interet)  {
 
         this.reward = reward;
         this.startDate = startDate;
@@ -47,8 +48,7 @@ public class Activity{
         this.robots = new ArrayList<>();
         this.createur = createur;
 
-        this.interets = new ArrayList<>();
-        this.interets.add(interet);
+        this.interet = interet;
         interet.addRelatedActivity(this);
 
         this.taches = new ArrayList<>();
@@ -110,8 +110,17 @@ public class Activity{
      *
      * @return La date de début.
      */
-    public Date getStartDate(){
+    public LocalDate getStartDate(){
         return this.startDate;
+    }
+
+    /**
+     * Renvoi le nombre de point offert pour la complétion de l'activité
+     *
+     * @Return reward (int)
+     */
+    public int getReward(){
+        return this.reward;
     }
 
     /**
@@ -119,7 +128,7 @@ public class Activity{
      *
      * @return La date de fin.
      */
-    public Date getEndDate(){
+    public LocalDate getEndDate(){
         return this.endDate;
     }
 
@@ -149,5 +158,59 @@ public class Activity{
     public Utilisateur getCreator(){
         return this.createur;
     }
-    
+
+    /**
+     * Ajoute une action a la liste des actins
+     *
+     * @Retun void
+     */
+    public void addTache(Tache t){
+        this.taches.add(t);
+    }
+
+    /**
+     * Imprime les le nom de l'activité et toutes les informations associées
+     *
+     * @Return void
+     */
+    public void showActivityDetails(){
+        System.out.println("nom de l'activité : " + this.getName() + " , date de début : "+ this.getStartDate() + " , date de fin : "+ this.getEndDate());
+
+        System.out.println("participants : ");
+        for(Robot r : this.robots){
+            System.out.print("• pseudo : " + r.getOwner().getPseudo() + " , nom du robot : " + r.getName());
+        }
+        System.out.println("");
+
+        System.out.println("Taches associées : ");
+        int c = 0;
+        for(Tache t : this.taches){
+            System.out.print("• tache "+ (++c) + " : ");
+
+            for(Action a : t.getActions()){
+                System.out.print(a.getType() + ", ");
+            }
+        }
+        System.out.println("");
+
+    }
+
+    /**
+     *
+     *
+     *
+     */
+    public ArrayList<Tache> getTasks(){
+        return this.taches;
+    }
+
+    /**
+     *
+     *
+     *
+     */
+    public Interet getInteret(){
+        return this.interet;
+    }
+
 }

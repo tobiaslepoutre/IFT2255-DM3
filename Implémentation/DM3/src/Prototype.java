@@ -1,12 +1,17 @@
+import Activity.Activity;
+import Activity.Tache;
+import Activity.action.*;
+import Machines.Robot;
 import Machines.composantes.Composante;
 import Users.Fournisseur;
 import Users.Utilisateur;
 import System.SystemeRobotix;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class Prototype {
@@ -16,6 +21,7 @@ public class Prototype {
     private static Utilisateur user = null;
     private static Scanner scanner = new Scanner(System.in);  // Create a Scanner object
     private static boolean online = true;
+    private static LocalDate currentDate = LocalDate.of(2023,01,01);
 
     public static void main(String[] args) {
         //TODO : sauvegarder les information de l'object system et le reload a chaque fois comme demandé par la prof
@@ -27,6 +33,7 @@ public class Prototype {
         System.out.println("Bienvenue dans Robotix");
 
         while(Prototype.online){
+
             //Cas Fournisseur
 
 
@@ -35,19 +42,24 @@ public class Prototype {
                 connexion();
             }
 
-            System.out.println("----------------------------------------------------"); // TODO : gerer la date ici
+            System.out.println("----------------------------------------------------");
+            System.out.println("--------------" + Prototype.currentDate.getYear() + "-" + Prototype.currentDate.getMonth() + "-" + Prototype.currentDate.getDayOfMonth() + "----------------");
             System.out.println("\nVous avez actuellement "+ user.getMoney() + "CAD");
             System.out.println("Que voulez vous faire ? tapez un des choix correspondant ou out pour quittez le système : \n");
 
-            System.out.println("showProfile        -> voir un profil (pseudo)");
-            System.out.println("showMyProfile      -> voir mon profil");
-            System.out.println("showAll            -> voir tous les pseudo des profils");
-            System.out.println("follow             -> suivre un autre utilisateur (pseudo)");
-            System.out.println("findSeller         -> trouver un fournisseur (nom, adresse, Type de composant voulu)");
-            System.out.println("buyComponent       -> Acheter un composant chez un fournisseur");
-            System.out.println("createRobot        -> crée un robot en utilisant nos composant actuel");
-            System.out.println("manageActivities   -> créer, participé, ou supprimer une activité");
-            System.out.println("manageTasks        -> créer et assigner une tache à une activité");
+            System.out.println("showProfile               -> voir un profil (pseudo)");
+            System.out.println("showMyProfile             -> voir mon profil");
+            System.out.println("showAll                   -> voir tous les pseudo des profils");
+            System.out.println("follow                    -> suivre un autre utilisateur (pseudo)");
+            System.out.println("findSeller                -> trouver un fournisseur (nom, adresse, Type de composant voulu)");
+            System.out.println("buyComponent              -> Acheter un composant chez un fournisseur");
+            System.out.println("createRobot               -> crée un robot en utilisant nos composant actuel");
+            System.out.println("showMetrics               -> affiche les métrique de ma flotte");
+            System.out.println("manageActivities          -> créer, participé, ou supprimer une activité");
+            System.out.println("manageTasks               -> créer et assigner une tache à une activité");
+            System.out.println("showActivityDetails       -> montrer les detais d'une activity");
+            System.out.println("continue                  -> avancer dans le temps");
+
             //TODO : buyMultipleCoponent pour se faciliter la vie
 
             System.out.println("\n");
@@ -84,8 +96,24 @@ public class Prototype {
                     Prototype.createRobot();
                     break;
 
+                case "SHOWMETRICS":
+                    Prototype.showMyMetrics();
+                    break;
+
                 case "MANAGEACTIVITIES":
                     Prototype.manageActivities();
+                    break;
+
+                case "MANAGETASKS":
+                    Prototype.manageTasks();
+                    break;
+
+                case "SHOWACTIVITYDETAILS":
+                    Prototype.showActivityDetails();
+                    break;
+
+                case "CONTINUE":
+                    Prototype.moveInTime();
                     break;
 
                 case "OUT":
@@ -151,6 +179,17 @@ public class Prototype {
     }
 
     public static void buyComponent(){
+        System.out.println("Liste des fournisseurs et leurs composantes disponibles :  ");
+
+        for(Fournisseur seller : system.getSellers()){
+            System.out.print("• "+seller.getFirstName() + " : ");
+
+            for(Composante c : seller.getComposantes()){
+                System.out.print(c.getType() + ", ");
+            }
+            System.out.println("");
+        }
+
         System.out.print("donner est le nom du fournisseur chez lequel vous voulez achetez la composante : ");
         String sellerName = Prototype.scanner.nextLine();
 
@@ -240,7 +279,7 @@ public class Prototype {
                     System.out.println("• "+ c.getName());
                 }
             }
-            System.out.println("donner le nom de la prochaine composante que vous voulez include dans votre robot \nOu tapez exit pour annulez la creation du robot\nOu tapez pour terminer la creation du robot  : ");
+            System.out.println("\ndonner le nom de la prochaine composante que vous voulez include dans votre robot \nOu tapez exit pour annulez la creation du robot\nOu tapez pour terminer la creation du robot  : ");
 
             String text = Prototype.scanner.nextLine();
             if(text.toUpperCase().equals("EXIT")){
@@ -287,13 +326,23 @@ public class Prototype {
 
             System.out.print("date de départ dans le format yyyy-mm-jj : ");
             String sdate = Prototype.scanner.nextLine();
-            LocalDate localStartDate = LocalDate.parse(sdate);
-            Date startDate = Date.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            LocalDate startDate = LocalDate.now();
+
+            try{
+                startDate = LocalDate.parse(sdate);
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
 
             System.out.print("date de départ dans le format yyyy-mm-jj : ");
             String edate = Prototype.scanner.nextLine();
-            LocalDate localEndDate = LocalDate.parse(edate);
-            Date endDate = Date.from(localEndDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            LocalDate endDate = LocalDate.now();
+
+            try{
+                endDate = LocalDate.parse(edate);
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
 
             System.out.print("le nombre de points en récompense   : ");
             int reward = Integer.parseInt(Prototype.scanner.nextLine());
@@ -329,6 +378,247 @@ public class Prototype {
 
             user.assignRobotToActivity(name);
         }
+    }
+
+    public static void showActivityDetails(){
+        System.out.print("\nDonnez le nom de l'activité : ");
+        String name = Prototype.scanner.nextLine();
+
+        for(Activity a : system.getActivities()){
+            if(a.getName().toUpperCase().equals(name.toUpperCase())){
+                a.showActivityDetails();
+                return;
+            }
+        }
+
+        System.out.println("Cette activité n'existe pas");
+
+    }
+
+    public static void manageTasks(){
+
+        System.out.print("Veuillez entrez le nom de l'activité auqeulle vous voulez assignez des taches : ");
+        String activityName = Prototype.scanner.nextLine();
+
+        System.out.print("Veuillez entrez la date de l'activité dans le format yyyy-mm-jj : ");
+        String date = Prototype.scanner.nextLine();
+        LocalDate localStartDate = LocalDate.parse(date);
+        LocalDate executionDate = LocalDate.from(localStartDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        ArrayList<Action> actions = new ArrayList<>();
+
+        System.out.println("cette activité se déroule du ");
+        while(true){
+
+            System.out.println("Veuillez entrer le type d'action que vous voulez ajouter à cette tache (Tapez terminer pour conclure) : ");
+            System.out.println("translate");
+            System.out.println("rotate");
+            System.out.println("listening");
+            System.out.println("print");
+            System.out.println("trigger");
+            System.out.println("sound");
+
+            String choice = Prototype.scanner.nextLine();
+            
+            if(choice.toUpperCase().equals("TRANSLATE")){
+                System.out.println("donner les coordonnées et la vitese");
+
+                float x;
+                float y;
+                float z;
+                float v;
+                int duration;
+                boolean transition;
+
+                System.out.print("x : " );
+                x = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("y : " );
+                y = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("z : " );
+                z = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("speed : " );
+                v = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("duration : " );
+                duration = Integer.parseInt(Prototype.scanner.nextLine());
+
+                System.out.print("transition : (true/false) " );
+                transition = Boolean.parseBoolean(Prototype.scanner.nextLine());
+
+                try {
+                    actions.add(new TranslateAction(duration, transition, x, y , z, v));
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    return;
+                }
+
+            }
+            
+            if(choice.toUpperCase().equals("ROTATE")){
+                System.out.println("donner les caractéristique : ");
+
+                float x;
+                float y;
+                float z;
+                float v;
+                int duration;
+                boolean transition;
+
+                System.out.print("rotation en x : " );
+                x = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("rotation en y : " );
+                y = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("rotation en z : " );
+                z = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("vitese de rotation : " );
+                v = Float.parseFloat(Prototype.scanner.nextLine());
+
+                System.out.print("duration : " );
+                duration = Integer.parseInt(Prototype.scanner.nextLine());
+
+                System.out.print("transition : (true/false) " );
+                transition = Boolean.parseBoolean(Prototype.scanner.nextLine());
+
+                try{
+                    actions.add(new RotateAction(duration, transition, x, y , z, v));
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    return;
+                }
+            }
+            
+            if(choice.toUpperCase().equals("LISTENING")){
+
+                int duration;
+                boolean transition;
+
+                System.out.print("duration : " );
+                duration = Integer.parseInt(Prototype.scanner.nextLine());
+
+                System.out.print("transition : (true/false) " );
+                transition = Boolean.parseBoolean(Prototype.scanner.nextLine());
+
+                try{
+                    actions.add(new ListenAction(duration, transition));
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    return;
+                }
+            }
+
+            if(choice.toUpperCase().equals("PRINT")){
+                int duration;
+                boolean transition;
+                String text;
+
+                System.out.print("duration : " );
+                duration = Integer.parseInt(Prototype.scanner.nextLine());
+
+                System.out.print("transition : (true/false) " );
+                transition = Boolean.parseBoolean(Prototype.scanner.nextLine());
+
+                System.out.print("texte à imprimé : ");
+                text = Prototype.scanner.nextLine();
+
+                try{
+                    actions.add(new PrintAction(duration, transition, text));
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    return;
+                }
+            }
+
+            if(choice.toUpperCase().equals("TRIGGER")){
+                int duration;
+                boolean transition;
+                String text;
+
+                System.out.print("duration : " );
+                duration = Integer.parseInt(Prototype.scanner.nextLine());
+
+                System.out.print("date de déclanchement dans le format yyyy-mm-jj : ");
+                String date_ = Prototype.scanner.nextLine();
+                LocalDate localStartDate_ = LocalDate.parse(date_);
+                LocalDate executionDate_ = LocalDate.from(localStartDate_.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                try{
+                    actions.add(new TriggerAction(duration, executionDate_));
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    return;
+                }
+            }
+
+            if(choice.toUpperCase().equals("SOUND")){
+                int duration;
+                boolean transition;
+                String text;
+
+                System.out.print("duration : " );
+                duration = Integer.parseInt(Prototype.scanner.nextLine());
+
+                System.out.print("transition : (true/false) " );
+                transition = Boolean.parseBoolean(Prototype.scanner.nextLine());
+
+                System.out.print("type de son : ");
+                String sound = Prototype.scanner.nextLine();
+
+                try{
+                    actions.add(new EmitSoundAction(duration, transition, sound));
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    return;
+                }
+
+            }
+
+            if(choice.toUpperCase().equals("TERMINER")){
+                break;
+            }
+        }
+
+        user.createTask(activityName, executionDate, actions);
+    }
+
+    public static void moveInTime(){
+
+        LocalDate last = LocalDate.of(1990,01,01);
+
+        for(Activity activity : system.getActivities()){
+
+            if(activity.getStartDate().isBefore(Prototype.currentDate)){
+                return;
+            }
+
+            if(last.isBefore(activity.getEndDate())){
+                last = activity.getEndDate();
+            }
+
+            for(Robot robot : activity.getParticipantsRobot()){
+                int powerLevelEnd   = Math.max(0, (int)ChronoUnit.DAYS.between(activity.getEndDate(), activity.getStartDate()));
+                int cpuConsommation = 0;
+
+                for(Tache tache : activity.getTasks()){
+                    cpuConsommation += Math.max(2,tache.getActions().size() / robot.getComposants().size());
+                }
+
+                robot.getOwner().addPoints(activity.getReward());
+
+                robot.statistiques.get("consommationCPU").add(Math.min(cpuConsommation,100));
+                robot.statistiques.get("powerLevelUsed").add(Math.min(100, powerLevelEnd));
+
+            }
+
+        }
+
+        currentDate = LocalDate.of(last.getYear() , last.getMonth() , last.getDayOfMonth() + 1);
+
     }
 
     public static void connexion(){
@@ -413,11 +703,20 @@ public class Prototype {
 
         //inscription de user et seller
 
-        system.signUpUser(null, "Giovanni", "Belval", "gio@b.com", "belgio", "123456", "1234567890");
-        system.signUpUser(null, "Tobias", "Lepoutre", "tob@g.com", "toblep", "123456", "1234567890");
+        system.signUpUser(null, "Giovanni", "Belval"  , "gio@b.com", "belgio", "123456", "1234567890");
+        system.signUpUser(null, "Tobias"  , "Lepoutre", "tob@g.com", "toblep", "123456", "1234567890");
+        system.signUpUser(null, "Raphael" , "Ana"     , "rap@b.com", "rahana", "123456", "1234567890");
+        system.signUpUser(null, "Kael"    , "Biaritz" , "kae@g.com", "kaebia", "123456", "1234567890");
+        system.signUpUser(null, "Vincent" , "Pascal"  , "vin@b.com", "vinpas", "123456", "1234567890");
+        system.signUpUser(null, "Eloise"  , "Lepoutre", "elo@g.com", "elolep", "123456", "1234567890");
+        system.signUpUser(null, "Partale" , "Brother" , "par@b.com", "parbro", "123456", "1234567890");
+        system.signUpUser(null, "Rémis"   , "Amir"    , "rem@g.com", "remami", "123456", "1234567890");
+        system.signUpUser(null, "Auguste" , "Amir"    , "aug@b.com", "augami", "123456", "1234567890");
+        system.signUpUser(null, "Mario"   , "Amir"    , "mar@g.com", "marami", "123456", "1234567890");
 
         system.signUpSeller("Google", "Theo", "t@gmail.com", "123456","1234567890","1234 rue de Paris",100);
         system.signUpSeller("Google", "Victor", "v@gmail.com", "123456","1234567890","1234 rue de Paris",100);
+
 
         //following
 
@@ -426,9 +725,12 @@ public class Prototype {
 
         Utilisateur user1 = system.loginUser("belgio", "123456");
 
-        user1.createActivity("creation", "robotique", "atelier" , new Date(2023,05,01), new Date(2023,05,05), 150);
-        user1.createActivity("creation", "robotique", "programation" , new Date(2023,05,01), new Date(2023,04,05), 150);
-        user1.createActivity("education", "automobile", "course" , new Date(2023,06,01), new Date(2023,06,05), 150);
+        user1.createActivity("creation", "robotique", "atelier" , LocalDate.of(2023,05,01), LocalDate.of(2023,05,05), 200);
+        user1.createActivity("creation", "robotique", "programation" , LocalDate.of(2023,05,01), LocalDate.of(2023,05,05), 150);
+        user1.createActivity("education", "automobile", "course" , LocalDate.of(2023,06,01), LocalDate.of(2023,06,05), 150);
+        user1.createActivity("creation", "robotique", "photography" , LocalDate.of(2023,06,01), LocalDate.of(2023,06,02), 150);
+        user1.createActivity("creation", "robotique", "aviation" , LocalDate.of(2023,05,01), LocalDate.of(2023,06,01), 200);
+        user1.createActivity("education", "automobile", "sprint" , LocalDate.of(2023,06,01), LocalDate.of(2023,06,05), 150);
 
         // create composante
         Fournisseur seller1 = system.loginSeller("Theo","123456");

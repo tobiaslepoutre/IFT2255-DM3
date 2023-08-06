@@ -6,8 +6,8 @@ import Machines.*;
 import Machines.composantes.Composante;
 import System.SystemeRobotix;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * La classe Utilisateur représente un utilisateur du système Robotix.
@@ -213,7 +213,7 @@ public class Utilisateur extends Acteur {
      * @param reward La récompense pour l'activité.
      * @return true si l'activité est créée avec succès, false sinon.
      */
-    public boolean createActivity(String type, String interetName, String name, Date startDate, Date endDate, int reward){
+    public boolean createActivity(String type, String interetName, String name, LocalDate startDate, LocalDate endDate, int reward){
         // crée une nouvelle activité
 
         for(Activity a : SystemeRobotix.getInstance().getActivities()){
@@ -358,7 +358,7 @@ public class Utilisateur extends Acteur {
      * @param actionsOfTask La liste des actions à ajouter à la tâche.
      * @return true si la tâche est créée avec succès, false sinon.
      */
-    public boolean createTask(String activityName, Date executionDate, ArrayList<Action> actionsOfTask){
+    public boolean createTask(String activityName, LocalDate executionDate, ArrayList<Action> actionsOfTask){
         //crée une task et l'ajoute ou non à une activité
 
         if(actionsOfTask.isEmpty()){
@@ -372,6 +372,12 @@ public class Utilisateur extends Acteur {
         }
 
         if(activity == null){
+            System.out.println("cette activité n'existe as ou n'est pas sous votre controle");
+            return false;
+        }
+
+        if(executionDate.isBefore(activity.getStartDate()) || executionDate.isAfter(activity.getEndDate())){
+            System.out.println("cette date n'est pas dans la plage de l'activité");
             return false;
         }
 
@@ -382,6 +388,8 @@ public class Utilisateur extends Acteur {
             a.assignToTask(tache);
 
         }
+
+        activity.addTache(tache);
         return true;
 
     }
@@ -498,6 +506,9 @@ public class Utilisateur extends Acteur {
             System.out.println("Cette activité n'existe pas");
             return false;
         }
+
+        this.interets.add(activity.getInteret());
+        activity.getInteret().addInterestedUser(this.getPseudo());
 
         for(Robot r : this.flotte.getRobots()){
             if(!r.isBusy(activity.getStartDate() , activity.getEndDate())){
