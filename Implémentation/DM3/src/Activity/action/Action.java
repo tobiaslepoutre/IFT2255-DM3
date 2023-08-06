@@ -2,12 +2,14 @@ package Activity.action;
 
 import Activity.Tache;
 
+import java.io.Serializable;
+
 /**
  * La classe Action est une classe abstraite qui définit les actions à entreprendre.
  * @author Giovanni Belval
  * @version 1.0
  */
-public abstract class Action {
+public abstract class Action implements Serializable {
 
     protected String type;
     private boolean transition;

@@ -1,4 +1,5 @@
 package Users;
+import java.io.Serializable;
 import java.util.*;
 
 import System.SystemeRobotix;
@@ -11,7 +12,7 @@ import System.SystemeRobotix;
  * @author Giovanni Belval
  * @version 1.0
  */
-public abstract class Acteur{
+public abstract class Acteur implements Serializable {
 
     /* Attributs */
     private String compagnieName;

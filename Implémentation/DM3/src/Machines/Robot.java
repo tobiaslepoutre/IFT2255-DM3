@@ -5,6 +5,7 @@ import Activity.Tache;
 import Machines.composantes.Composante;
 import Users.Utilisateur;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.HashMap;
  * @author Tobias Lepoutre
  * @version 1.0
  */
-public class Robot {
+public class Robot implements Serializable {
 
     /* attributs */
     private String name;

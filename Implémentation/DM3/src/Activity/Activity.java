@@ -3,6 +3,8 @@ package Activity;
 import Activity.action.Action;
 import Machines.Robot;
 import Users.Utilisateur;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
@@ -11,7 +13,7 @@ import java.time.LocalDate;
  * @author Giovanni Belval
  * @version 1.0
  */
-public class Activity{
+public class Activity implements Serializable {
 
     /* Attributs*/
     private int reward;

@@ -2,12 +2,14 @@ package Machines.composantes;
 
 import Users.Fournisseur;
 
+import java.io.Serializable;
+
 /**
  * La classe CPU représente un processeur qui est une composante d'un robot.
  * @author Tobias Lepoutre
  * @version 1.0
  */
-public class CPU extends Composante {
+public class CPU extends Composante implements Serializable {
 
     /**
      * La consommation en énergie du CPU.

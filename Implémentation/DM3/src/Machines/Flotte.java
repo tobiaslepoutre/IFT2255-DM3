@@ -1,5 +1,6 @@
 package Machines;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Tobias Lepoutre
  * @version 1.0
  */
-public class Flotte {
+public class Flotte implements Serializable {
     private final List<Robot> robots;
 
     /**

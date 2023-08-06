@@ -3,6 +3,7 @@ package Activity;
 import Activity.action.Action;
 import Machines.Robot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
@@ -11,7 +12,7 @@ import java.time.LocalDate;
  * @author Giovanni Belval
  * @version 1.0
  */
-public class Tache {
+public class Tache implements Serializable {
     private LocalDate executionDate;
 
     /* Associations */

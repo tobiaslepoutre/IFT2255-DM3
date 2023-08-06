@@ -4,6 +4,7 @@ import Machines.Robot;
 import Users.Fournisseur;
 import Users.Utilisateur;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,7 +13,7 @@ import java.util.Arrays;
  * @author Tobias Lepoutre
  * @version 1.0
  */
-public class Composante {
+public class Composante implements Serializable {
 
     /* attributs */
     private String name;

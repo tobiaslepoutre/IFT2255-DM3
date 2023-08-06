@@ -1,6 +1,8 @@
 package Activity;
 
 import Users.Utilisateur;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import System.SystemeRobotix;
 
@@ -9,7 +11,7 @@ import System.SystemeRobotix;
  * @author Giovanni Belval
  * @version 1.0
  */
-public class Interet {
+public class Interet implements Serializable {
 
     /* Attributs*/
     public String type;

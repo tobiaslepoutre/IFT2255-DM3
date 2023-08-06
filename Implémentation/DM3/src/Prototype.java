@@ -7,7 +7,7 @@ import Users.Fournisseur;
 import Users.Utilisateur;
 import System.SystemeRobotix;
 
-import java.time.Duration;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -23,12 +23,22 @@ public class Prototype {
     private static boolean online = true;
     private static LocalDate currentDate = LocalDate.of(2023,01,01);
 
-    public static void main(String[] args) {
-        //TODO : sauvegarder les information de l'object system et le reload a chaque fois comme demandé par la prof
+    public static void main(String[] args) throws IOException {
+        ObjectInputStream obj;
 
-        // initialisation générale
-        system = SystemeRobotix.getInstance();
-        Prototype.setup();
+        try{
+            // we load the previous state of the system
+
+             obj = new ObjectInputStream(new FileInputStream("system.txt"));
+             system = (SystemeRobotix)obj.readObject();
+
+        }catch(Exception e){
+
+            System.out.println(e.getMessage());
+            system = SystemeRobotix.getInstance();
+            Prototype.setup();
+
+        }
 
         System.out.println("Bienvenue dans Robotix");
 
@@ -60,7 +70,6 @@ public class Prototype {
             System.out.println("showActivityDetails       -> montrer les detais d'une activity");
             System.out.println("continue                  -> avancer dans le temps");
 
-            //TODO : buyMultipleCoponent pour se faciliter la vie
 
             System.out.println("\n");
 
@@ -127,6 +136,8 @@ public class Prototype {
 
         }
 
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("system.txt"));
+        out.writeObject(system);
     }
 
     public static void showProfile(){
@@ -714,27 +725,42 @@ public class Prototype {
         system.signUpUser(null, "Auguste" , "Amir"    , "aug@b.com", "augami", "123456", "1234567890");
         system.signUpUser(null, "Mario"   , "Amir"    , "mar@g.com", "marami", "123456", "1234567890");
 
-        system.signUpSeller("Google", "Theo", "t@gmail.com", "123456","1234567890","1234 rue de Paris",100);
-        system.signUpSeller("Google", "Victor", "v@gmail.com", "123456","1234567890","1234 rue de Paris",100);
+        system.signUpSeller("Google"  , "Theo", "t@gmail.com", "123456","1234567890","1234 rue de Paris",100);
+        system.signUpSeller("Google"  , "Victor", "v@gmail.com", "123456","1234567890","1234 rue de genève",100);
+        system.signUpSeller("Facebook", "francis", "ter@gmail.com", "123456","1234567890","1234 rue de Paris",100);
+        system.signUpSeller("Netflix" , "edouard", "vit@gmail.com", "123456","1234567890","1234 rue de Paris",100);
+        system.signUpSeller("Google"  , "valentin", "ol@gmail.com", "123456","1234567890","1234 rue de Lyon",100);
+        system.signUpSeller("Google"  , "grégory", "at@gmail.com", "123456","1234567890","1234 rue de Montreal",100);
 
 
         //following
 
-        system.loginUser("belgio","123456").followUser("toblep");
-        system.loginUser("belgio","123456").followSeller(("Victor"));
-
         Utilisateur user1 = system.loginUser("belgio", "123456");
+        Utilisateur user2 = system.loginUser("toblep", "123456");
+        Utilisateur user3 = system.loginUser("rahana", "123456");
+        Utilisateur user4 = system.loginUser("elolep", "123456");
+        Utilisateur user5 = system.loginUser("marami", "123456");
 
-        user1.createActivity("creation", "robotique", "atelier" , LocalDate.of(2023,05,01), LocalDate.of(2023,05,05), 200);
-        user1.createActivity("creation", "robotique", "programation" , LocalDate.of(2023,05,01), LocalDate.of(2023,05,05), 150);
-        user1.createActivity("education", "automobile", "course" , LocalDate.of(2023,06,01), LocalDate.of(2023,06,05), 150);
-        user1.createActivity("creation", "robotique", "photography" , LocalDate.of(2023,06,01), LocalDate.of(2023,06,02), 150);
-        user1.createActivity("creation", "robotique", "aviation" , LocalDate.of(2023,05,01), LocalDate.of(2023,06,01), 200);
-        user1.createActivity("education", "automobile", "sprint" , LocalDate.of(2023,06,01), LocalDate.of(2023,06,05), 150);
+        user1.createActivity("creation", "robotique"  , "atelier"      , LocalDate.of(2023,2,1) , LocalDate.of(2023,2,6) , 200);
+        user2.createActivity("creation", "robotique"  , "programation" , LocalDate.of(2023,2,1) , LocalDate.of(2023,2,5) , 150);
+        user2.createActivity("education", "automobile", "course"       , LocalDate.of(2023,2,5) , LocalDate.of(2023,2,8) , 150);
+        user3.createActivity("creation", "robotique"  , "photography"  , LocalDate.of(2023,2,4) , LocalDate.of(2023,2,3) , 150);
+        user3.createActivity("creation", "algebre"    , "aviation"     , LocalDate.of(2023,5,2) , LocalDate.of(2023,6,1) , 200);
+        user4.createActivity("education", "automobile", "sprint"       , LocalDate.of(2023,6,1) , LocalDate.of(2023,6,5) , 150);
+        user4.createActivity("creation", "robotique"  , "devoirs"      , LocalDate.of(2023,5,1) , LocalDate.of(2023,7,5) , 200);
+        user5.createActivity("creation", "informatif" , "seminaire"    , LocalDate.of(2023,5,12), LocalDate.of(2023,5,15), 150);
+        user5.createActivity("education", "automobile", "formule1"     , LocalDate.of(2023,8,1), LocalDate.of(2023 ,8,5) , 150);
+        user1.createActivity("creation", "robotique"  , "assemblage"   , LocalDate.of(2023,6,1), LocalDate.of(2023 ,6,2) , 150);
+        user1.createActivity("creation", "robotique"  , "spaceX"       , LocalDate.of(2023,2,1), LocalDate.of(2023 ,6,1) , 200);
+        user1.createActivity("education", "automobile", "karting"      , LocalDate.of(2023,6,1), LocalDate.of(2023 ,6,5) , 150);
 
-        // create composante
-        Fournisseur seller1 = system.loginSeller("Theo","123456");
-        Fournisseur seller2 = system.loginSeller("Victor","123456");
+
+        Fournisseur seller1 = system.loginSeller("Theo"    ,"123456");
+        Fournisseur seller2 = system.loginSeller("Victor"  ,"123456");
+        Fournisseur seller3 = system.loginSeller("francis" ,"123456");
+        Fournisseur seller4 = system.loginSeller("edouard" ,"123456");
+        Fournisseur seller5 = system.loginSeller("valentin","123456");
+        Fournisseur seller6 = system.loginSeller("grégory" ,"123456");
 
         seller1.createComposante("HautParleur", "BooseX100" , "", 30);
         seller1.createComposante("bras", "mechaArm" , "", 25);
@@ -745,5 +771,22 @@ public class Prototype {
         seller2.createComposante("CPU", "RX900" , "the fastest CPU", 150);
         seller2.createComposante("CPU", "FX1000" , "", 95);
         seller2.createComposante("helice", "Ihelice" , "", 110);
+        seller2.createComposante("CPU", "RX900" , "the fastest CPU", 150);
+        seller2.createComposante("CPU", "FX1000" , "", 95);
+        seller2.createComposante("helice", "Ihelice" , "", 110);
+
+        seller3.createComposante("micro", "MRX18" , "slowest HP", 10);
+        seller3.createComposante("hautParleur", "HP360" , "", 95);
+        seller3.createComposante("helice", "Ihelice" , "", 110);
+        seller3.createComposante("CPU", "RX901" , "the fastest CPU for IA", 250);
+        seller3.createComposante("ecran", "Iscreen" , "", 95);
+        seller3.createComposante("helice", "Ihelice" , "", 110);
+
+        seller4.createComposante("CPU", "FX1000" , "", 95);
+        seller4.createComposante("helice", "Ihelice" , "", 110);
+        seller4.createComposante("bras", "mechaArm" , "", 25);
+        seller4.createComposante("ecran", "Iscreen" , "", 50);
+        seller4.createComposante("hautParleur", "HP360" , "", 95);
+
     }
 }

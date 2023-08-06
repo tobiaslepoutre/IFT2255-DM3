@@ -1,5 +1,6 @@
 package System;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
@@ -16,7 +17,7 @@ import Users.Utilisateur;
  * @author Giovanni Belval
  * @version 1.0
  */
-public class SystemeRobotix {
+public class SystemeRobotix implements Serializable {
     
     /* Instance singleton */
     private static SystemeRobotix instance;
