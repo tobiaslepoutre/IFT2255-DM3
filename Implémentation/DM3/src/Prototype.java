@@ -97,7 +97,7 @@ public class Prototype {
                     break;
 
                 case "SHOWMETRICS":
-                    Prototype.showMyMetrics();
+                    //Prototype.showMyMetrics();
                     break;
 
                 case "MANAGEACTIVITIES":
