@@ -14,6 +14,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * La classe Prototype est le point d'entrée du système Robotix,
+ * c'est elle qui contien main.
+ * @author Giovanni Belval
+ * @version 1.0
+ */
 public class Prototype {
 
     private static SystemeRobotix system;
