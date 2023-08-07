@@ -125,9 +125,14 @@ public class SystemeRobotix implements Serializable {
 
     /**
      * Méthode pour inscrire un nouvel utilisateur.
-     * @param companieName, firstName, secondName, email, pseudo, password, phoneNumber
-     *                      Des informations sur le nouvel utilisateur.
-     * @throws Exception   Si une exception se produit lors de la création d'un nouvel utilisateur.
+     * @param companieName
+     * @param firstName
+     * @param secondName
+     * @param email
+     * @param pseudo
+     * @param password
+     * @param phoneNumber
+     *
      */
     public void signUpUser(String companieName, String firstName, String secondName, String email, String pseudo,
                            String password, String phoneNumber){
@@ -144,7 +149,6 @@ public class SystemeRobotix implements Serializable {
      * Méthode pour inscrire un nouveau fournisseur.
      * @param companieName, firstName, email, password, phoneNumber, location, capacity
      *                      Des informations sur le nouveau fournisseur.
-     * @throws Exception   Si une erreur se produit lors de la création d'un nouveau fournisseur.
      */
     public void signUpSeller(String companieName, String firstName, String email, String password, String phoneNumber,
                              String location, int capacity){
@@ -318,7 +322,7 @@ public class SystemeRobotix implements Serializable {
 
     /**
      * Obtient tous les intérêts présents dans le système.
-     * @return ArrayList<Interet> La liste de tous les intérêts.
+     * @return ArrayList La liste de tous les intérêts.
      */
     public ArrayList<Interet> getInterets(){
         return this.interets;
@@ -414,7 +418,7 @@ public class SystemeRobotix implements Serializable {
 
     /**
      * Obtient toutes les activités présentes dans le système.
-     * @return ArrayList<Activity> La liste de toutes les activités.
+     * @return ArrayList La liste de toutes les activités.
      */
     public ArrayList<Activity> getActivities(){
         return this.activities;
