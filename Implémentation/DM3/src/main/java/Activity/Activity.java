@@ -119,11 +119,9 @@ public class Activity implements Serializable {
     /**
      * Renvoi le nombre de point offert pour la complétion de l'activité
      *
-     * @Return reward (int)
+     * @return reward (int)
      */
-    public int getReward(){
-        return this.reward;
-    }
+    public int getReward() { return this.reward; }
 
     /**
      * Renvoie la date de fin de l'activité.
@@ -162,9 +160,8 @@ public class Activity implements Serializable {
     }
 
     /**
-     * Ajoute une action a la liste des actins
+     * Ajoute une action a la liste des actions
      *
-     * @Retun void
      */
     public void addTache(Tache t){
         this.taches.add(t);
@@ -173,7 +170,6 @@ public class Activity implements Serializable {
     /**
      * Imprime les le nom de l'activité et toutes les informations associées
      *
-     * @Return void
      */
     public void showActivityDetails(){
         System.out.println("nom de l'activité : " + this.getName() + " , date de début : "+ this.getStartDate() + " , date de fin : "+ this.getEndDate());
@@ -198,21 +194,22 @@ public class Activity implements Serializable {
     }
 
     /**
+     * Renvoie la liste des tâches associées.
      *
-     *
-     *
+     * @return Une liste contenant les tâches.
      */
     public ArrayList<Tache> getTasks(){
         return this.taches;
     }
 
     /**
+     * Renvoie l'intérêt associé.
      *
-     *
-     *
+     * @return L'objet Interet associé.
      */
     public Interet getInteret(){
         return this.interet;
     }
 
 }
+
