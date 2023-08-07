@@ -85,11 +85,10 @@ IntelliJ(.java), Maven(JAR) et Visual Paradigm(.vpp)
   -     Ouvrir le projet:
         Lancer IntelliJ IDEA et ouvrir le projet.
 
-  -     Ouvrir le fichier source:  
-        Implémentation -> DM3 -> src -> Prototype.java.
+  -     Run le fichier JAR: Implémentation -> DM3 -> DM3-1.0-SNAPSHOT-jar-with-dependencies.jar
+ 
+  - 
 
-  -     Exécuter l'application: 
-        Choisir l'option 'Run Prototype.java'.
 
     Pour interagir avec Robotix, il faudra ensuite utiliser la ligne 
   de commande (Terminal) et la console pour executer des actions et \
