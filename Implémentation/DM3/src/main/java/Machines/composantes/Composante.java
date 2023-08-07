@@ -20,6 +20,11 @@ public class Composante implements Serializable {
     private String type;
     private String description;
     private float price;
+
+    /**
+     * Liste statique contenant les différents types de composants.
+     * Cette liste inclut des composants tels que "roue", "bras", "hélice", etc.
+     */
     public static ArrayList<String> types = new ArrayList<>(Arrays.asList("roue","bras","helice","camera", 
             "hautParleur","micro","ecran"));
 
