@@ -69,7 +69,7 @@ IntelliJ(.java), Maven(JAR) et Visual Paradigm(.vpp)
   - 5 activités par utilisateurs, dont au moins une non débutée, une en \
   cours et une terminée
 
-- Les détails du setup sont: 
+- Les détails de l'initialisation sont: 
 
 // Assignations des utilisateurs crées \
 Utilisateur#Num = (entreprise, prénom, nom, email, pseudo, mot de passe, telephone) \
