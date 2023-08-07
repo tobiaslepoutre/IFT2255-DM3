@@ -73,10 +73,11 @@ public class Tache implements Serializable {
     /**
      * Renvoie la liste des actiosn dans une taches
      *
-     * @return La listes des actions d'une taches ArrayList<Action>()
+     * @return ArrayListLa liste des actions d'une tache
      */
     public ArrayList<Action> getActions(){
         return this.actions;
     }
 
 }
+
