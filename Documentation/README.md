@@ -87,9 +87,6 @@ IntelliJ(.java), Maven(JAR) et Visual Paradigm(.vpp)
 
   -     Run le fichier JAR: Implémentation -> DM3 -> DM3-1.0-SNAPSHOT-jar-with-dependencies.jar
  
-  - 
 
-
-    Pour interagir avec Robotix, il faudra ensuite utiliser la ligne 
-  de commande (Terminal) et la console pour executer des actions et \
-  voir les sorties de l'application.
+    Ensuite il suffit de suivre les instruction. Une fois l'inscription complété, \
+    le code doit être Run à nouveau pour se connecter. C'est l'équivalent d'un reload.
